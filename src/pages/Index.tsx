@@ -9,10 +9,12 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import CareerSection from "@/components/CareerSection";
 import EnquirySection from "@/components/EnquirySection";
 import Footer from "@/components/Footer";
+import FloatingNavigation from "@/components/FloatingNavigation";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
+      <FloatingNavigation />
       <HeroSection />
       <AboutSection />
       <ServicesSection />
