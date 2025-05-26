@@ -10,11 +10,11 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-slate-900 overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image - Singapore Port/Logistics */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
         style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=1920&h=1080&fit=crop')`
+          backgroundImage: `url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1920&h=1080&fit=crop')`
         }}
       />
       
@@ -24,6 +24,15 @@ const HeroSection = () => {
       {/* Content */}
       <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div className="animate-fade-in">
+          {/* Yeti Logistics Logo */}
+          <div className="mb-8 flex justify-center">
+            <img 
+              src="/lovable-uploads/806298c1-9e37-4717-a687-adf03c5cf581.png" 
+              alt="Yeti Logistics Logo" 
+              className="h-24 sm:h-32 lg:h-40 w-auto object-contain"
+            />
+          </div>
+          
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
             Smart, Reliable
             <span className="block text-blue-300">Logistics Solutions</span>
