@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 
 interface ContentHook<T> {
@@ -21,7 +20,7 @@ const parseFrontmatter = (content: string) => {
     const colonIndex = line.indexOf(':');
     if (colonIndex > -1) {
       const key = line.substring(0, colonIndex).trim();
-      let value = line.substring(colonIndex + 1).trim();
+      let value: any = line.substring(colonIndex + 1).trim();
       
       // Remove quotes if present
       if ((value.startsWith('"') && value.endsWith('"')) || 
@@ -31,14 +30,19 @@ const parseFrontmatter = (content: string) => {
       
       // Convert numbers
       if (!isNaN(Number(value)) && value !== '') {
-        value = Number(value);
+        data[key] = Number(value);
       }
-      
       // Convert booleans
-      if (value === 'true') value = true;
-      if (value === 'false') value = false;
-      
-      data[key] = value;
+      else if (value === 'true') {
+        data[key] = true;
+      }
+      else if (value === 'false') {
+        data[key] = false;
+      }
+      // Keep as string
+      else {
+        data[key] = value;
+      }
     }
   });
   
