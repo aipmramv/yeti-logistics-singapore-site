@@ -1,6 +1,6 @@
 
 import HeroSection from "@/components/HeroSection";
-import WordPressAboutSection from "@/components/WordPressAboutSection";
+import DecapAboutSection from "@/components/DecapAboutSection";
 import DecapServicesSection from "@/components/DecapServicesSection";
 import IndustriesSection from "@/components/IndustriesSection";
 import WhyChooseSection from "@/components/WhyChooseSection";
@@ -16,7 +16,7 @@ const Index = () => {
     <div className="min-h-screen">
       <FloatingNavigation />
       <HeroSection />
-      <WordPressAboutSection />
+      <DecapAboutSection />
       <DecapServicesSection />
       <IndustriesSection />
       <WhyChooseSection />

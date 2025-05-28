@@ -7,9 +7,21 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useDecapContent } from "@/hooks/useDecapContent";
+
+interface CompanyInfo {
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+  registration: string;
+  founded: number;
+}
 
 const EnquirySection = () => {
   const { toast } = useToast();
+  const { data: companyInfo, loading: companyLoading } = useDecapContent<CompanyInfo>('/content/pages/company.md');
+  
   const [formData, setFormData] = useState({
     fullName: '',
     company: '',
@@ -35,8 +47,35 @@ const EnquirySection = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Create email content
+    const emailSubject = encodeURIComponent(`New Enquiry from ${formData.fullName}`);
+    const emailBody = encodeURIComponent(`
+New enquiry received from the website:
+
+Name: ${formData.fullName}
+Company: ${formData.company || 'Not provided'}
+Email: ${formData.email}
+Phone: ${formData.phone || 'Not provided'}
+Service Interest: ${formData.service || 'Not specified'}
+
+Message:
+${formData.message}
+
+This enquiry was submitted through the Yeti Logistics website contact form.
+    `);
+    
+    // Get company email from CMS or use fallback
+    const contactEmail = companyInfo?.email || 'enquiry@yetilogistics.com';
+    
+    // Open email client
+    window.location.href = `mailto:${contactEmail}?subject=${emailSubject}&body=${emailBody}`;
+    
     // Log to console as requested
-    console.log('Enquiry Form Submission:', formData);
+    console.log('Enquiry Form Submission:', {
+      ...formData,
+      submittedTo: contactEmail,
+      timestamp: new Date().toISOString()
+    });
     
     // Show success toast
     toast({
@@ -66,6 +105,21 @@ const EnquirySection = () => {
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Ready to optimize your logistics? Contact us today for a customized solution.
           </p>
+          
+          {!companyLoading && companyInfo && (
+            <div className="mt-8 text-center text-gray-600">
+              <p className="mb-2">
+                <strong>{companyInfo.name}</strong>
+              </p>
+              <p className="whitespace-pre-line mb-2">{companyInfo.address}</p>
+              <p className="mb-1">
+                <strong>Phone:</strong> {companyInfo.phone}
+              </p>
+              <p>
+                <strong>Email:</strong> {companyInfo.email}
+              </p>
+            </div>
+          )}
         </div>
         
         <Card className="shadow-2xl border-0">

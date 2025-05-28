@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 
 interface ContentHook<T> {
@@ -93,18 +94,37 @@ export const useDecapCollection = <T>(collectionName: string): ContentHook<T[]> 
         setLoading(true);
         setError(null);
         
-        // Try to fetch individual markdown files from the collection
+        // Define known files for each collection
+        const collectionFiles: { [key: string]: string[] } = {
+          'services': ['supply-chain', 'cold-chain', 'inventory', 'delivery', 'warehousing'],
+          'team': ['vimalasan', 'louis-tan', 'rishi-nathan'],
+          'testimonials': ['fresh-food-distributors', 'singapore-food-solutions', 'premium-grocers'],
+          'jobs': ['class-3-drivers', 'warehouse-packers', 'logistics-coordinator']
+        };
+        
+        const files = collectionFiles[collectionName] || [];
         const collectionData: T[] = [];
         
-        // This would need to be adapted based on actual file structure
-        // For now, we'll handle the fallback case
-        throw new Error('Collection loading not yet implemented');
+        // Fetch each file in the collection
+        for (const file of files) {
+          try {
+            const response = await fetch(`/content/${collectionName}/${file}.md`);
+            if (response.ok) {
+              const content = await response.text();
+              const parsedData = parseFrontmatter(content);
+              collectionData.push(parsedData as T);
+            }
+          } catch (fileErr) {
+            console.warn(`Failed to load ${file}.md from ${collectionName}:`, fileErr);
+          }
+        }
+        
+        setData(collectionData);
         
       } catch (err) {
-        // Use fallback data for now
-        setError(err instanceof Error ? err.message : 'Content not found, using fallback');
+        setError(err instanceof Error ? err.message : 'Failed to load collection');
+        console.error('Error loading collection:', err);
         setData([]);
-        console.warn(`No CMS content found for ${collectionName}, using fallback data`);
       } finally {
         setLoading(false);
       }
