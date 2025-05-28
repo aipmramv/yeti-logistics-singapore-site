@@ -7,6 +7,44 @@ interface ContentHook<T> {
   error: string | null;
 }
 
+// Parse frontmatter from markdown content
+const parseFrontmatter = (content: string) => {
+  const frontmatterRegex = /^---\n([\s\S]*?)\n---/;
+  const match = content.match(frontmatterRegex);
+  
+  if (!match) return {};
+  
+  const frontmatter = match[1];
+  const data: any = {};
+  
+  frontmatter.split('\n').forEach(line => {
+    const colonIndex = line.indexOf(':');
+    if (colonIndex > -1) {
+      const key = line.substring(0, colonIndex).trim();
+      let value = line.substring(colonIndex + 1).trim();
+      
+      // Remove quotes if present
+      if ((value.startsWith('"') && value.endsWith('"')) || 
+          (value.startsWith("'") && value.endsWith("'"))) {
+        value = value.slice(1, -1);
+      }
+      
+      // Convert numbers
+      if (!isNaN(Number(value)) && value !== '') {
+        value = Number(value);
+      }
+      
+      // Convert booleans
+      if (value === 'true') value = true;
+      if (value === 'false') value = false;
+      
+      data[key] = value;
+    }
+  });
+  
+  return data;
+};
+
 export const useDecapContent = <T>(contentPath: string): ContentHook<T> => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
@@ -23,8 +61,9 @@ export const useDecapContent = <T>(contentPath: string): ContentHook<T> => {
           throw new Error(`Failed to fetch content: ${response.statusText}`);
         }
         
-        const content = await response.json();
-        setData(content);
+        const content = await response.text();
+        const parsedData = parseFrontmatter(content);
+        setData(parsedData as T);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load content');
         console.error('Error loading content:', err);
@@ -50,15 +89,13 @@ export const useDecapCollection = <T>(collectionName: string): ContentHook<T[]> 
         setLoading(true);
         setError(null);
         
-        // Try to load from content folder
-        const response = await fetch(`/content/${collectionName}/index.json`);
-        if (response.ok) {
-          const content = await response.json();
-          setData(content);
-        } else {
-          // Fallback to empty array if no content exists
-          setData([]);
-        }
+        // Try to fetch individual markdown files from the collection
+        const collectionData: T[] = [];
+        
+        // This would need to be adapted based on actual file structure
+        // For now, we'll handle the fallback case
+        throw new Error('Collection loading not yet implemented');
+        
       } catch (err) {
         // Use fallback data for now
         setError(err instanceof Error ? err.message : 'Content not found, using fallback');
