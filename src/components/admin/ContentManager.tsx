@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,36 +11,59 @@ interface ContentManagerProps {
   contentType: string;
 }
 
+type ServiceItem = {
+  id: number;
+  title: string;
+  description: string;
+  icon: string;
+};
+
+type TeamItem = {
+  id: number;
+  name: string;
+  position: string;
+  image: string;
+};
+
+type TestimonialItem = {
+  id: number;
+  name: string;
+  message: string;
+  rating: number;
+};
+
+type ContentItem = ServiceItem | TeamItem | TestimonialItem;
+
 const ContentManager = ({ contentType }: ContentManagerProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [editingItem, setEditingItem] = useState<any>(null);
+  const [editingItem, setEditingItem] = useState<ContentItem | null>(null);
   const { toast } = useToast();
 
   // Mock data for demonstration
-  const getMockData = () => {
+  const getMockData = (): ContentItem[] => {
     switch (contentType) {
       case "services":
         return [
           { id: 1, title: "Cold Chain Solutions", description: "Temperature-controlled logistics", icon: "❄️" },
           { id: 2, title: "Supply Chain Management", description: "End-to-end supply chain optimization", icon: "📦" },
           { id: 3, title: "B2B Delivery", description: "Business-to-business delivery services", icon: "🚚" },
-        ];
+        ] as ServiceItem[];
       case "team":
         return [
           { id: 1, name: "John Doe", position: "CEO", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" },
           { id: 2, name: "Jane Smith", position: "Operations Manager", image: "https://images.unsplash.com/photo-1494790108755-2616b811e8ef?w=150&h=150&fit=crop&crop=face" },
-        ];
+        ] as TeamItem[];
       case "testimonials":
         return [
           { id: 1, name: "ABC Company", message: "Excellent service and reliability", rating: 5 },
           { id: 2, name: "XYZ Corp", message: "Outstanding cold chain solutions", rating: 5 },
-        ];
+        ] as TestimonialItem[];
       default:
         return [];
     }
   };
 
-  const [items, setItems] = useState(getMockData());
+  const [items, setItems] = useState<ContentItem[]>(getMockData());
 
   const handleSave = () => {
     toast({
@@ -52,7 +74,7 @@ const ContentManager = ({ contentType }: ContentManagerProps) => {
     setEditingItem(null);
   };
 
-  const handleEdit = (item: any) => {
+  const handleEdit = (item: ContentItem) => {
     setEditingItem(item);
     setIsEditing(true);
   };
@@ -63,6 +85,42 @@ const ContentManager = ({ contentType }: ContentManagerProps) => {
       title: "Item Deleted",
       description: "The item has been removed successfully.",
     });
+  };
+
+  const renderItemDisplay = (item: ContentItem) => {
+    if ('title' in item && 'description' in item && 'icon' in item) {
+      // Service item
+      const serviceItem = item as ServiceItem;
+      return (
+        <div>
+          <h3 className="font-semibold">{serviceItem.icon} {serviceItem.title}</h3>
+          <p className="text-gray-600">{serviceItem.description}</p>
+        </div>
+      );
+    } else if ('name' in item && 'position' in item && 'image' in item) {
+      // Team item
+      const teamItem = item as TeamItem;
+      return (
+        <div className="flex items-center space-x-3">
+          <img src={teamItem.image} alt={teamItem.name} className="w-12 h-12 rounded-full" />
+          <div>
+            <h3 className="font-semibold">{teamItem.name}</h3>
+            <p className="text-gray-600">{teamItem.position}</p>
+          </div>
+        </div>
+      );
+    } else if ('name' in item && 'message' in item && 'rating' in item) {
+      // Testimonial item
+      const testimonialItem = item as TestimonialItem;
+      return (
+        <div>
+          <h3 className="font-semibold">{testimonialItem.name}</h3>
+          <p className="text-gray-600">{testimonialItem.message}</p>
+          <div className="text-yellow-500">{"★".repeat(testimonialItem.rating)}</div>
+        </div>
+      );
+    }
+    return null;
   };
 
   const renderForm = () => {
@@ -169,28 +227,7 @@ const ContentManager = ({ contentType }: ContentManagerProps) => {
           <Card key={item.id}>
             <CardContent className="flex items-center justify-between p-4">
               <div className="flex-1">
-                {contentType === "services" && (
-                  <div>
-                    <h3 className="font-semibold">{item.icon} {item.title}</h3>
-                    <p className="text-gray-600">{item.description}</p>
-                  </div>
-                )}
-                {contentType === "team" && (
-                  <div className="flex items-center space-x-3">
-                    <img src={item.image} alt={item.name} className="w-12 h-12 rounded-full" />
-                    <div>
-                      <h3 className="font-semibold">{item.name}</h3>
-                      <p className="text-gray-600">{item.position}</p>
-                    </div>
-                  </div>
-                )}
-                {contentType === "testimonials" && (
-                  <div>
-                    <h3 className="font-semibold">{item.name}</h3>
-                    <p className="text-gray-600">{item.message}</p>
-                    <div className="text-yellow-500">{"★".repeat(item.rating)}</div>
-                  </div>
-                )}
+                {renderItemDisplay(item)}
               </div>
               <div className="flex space-x-2">
                 <Button variant="outline" size="sm" onClick={() => handleEdit(item)}>

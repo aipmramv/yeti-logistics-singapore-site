@@ -1,7 +1,7 @@
 
 import HeroSection from "@/components/HeroSection";
 import WordPressAboutSection from "@/components/WordPressAboutSection";
-import WordPressServicesSection from "@/components/WordPressServicesSection";
+import DecapServicesSection from "@/components/DecapServicesSection";
 import IndustriesSection from "@/components/IndustriesSection";
 import WhyChooseSection from "@/components/WhyChooseSection";
 import TeamSection from "@/components/TeamSection";
@@ -17,7 +17,7 @@ const Index = () => {
       <FloatingNavigation />
       <HeroSection />
       <WordPressAboutSection />
-      <WordPressServicesSection />
+      <DecapServicesSection />
       <IndustriesSection />
       <WhyChooseSection />
       <TeamSection />
