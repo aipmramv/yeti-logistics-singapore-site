@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { databases, DATABASE_ID, COLLECTIONS } from '@/config/appwrite';
 import { Query } from 'appwrite';
+import type { Service, TeamMember, Testimonial, Job, CompanyInfo, AboutInfo } from '@/types/appwrite';
 
 interface ContentHook<T> {
   data: T | null;
@@ -78,9 +79,9 @@ export const useAppwriteCollection = <T>(collectionId: string): ContentHook<T[]>
 };
 
 // Specific hooks for each content type
-export const useServices = () => useAppwriteCollection(COLLECTIONS.SERVICES);
-export const useTeam = () => useAppwriteCollection(COLLECTIONS.TEAM);
-export const useTestimonials = () => useAppwriteCollection(COLLECTIONS.TESTIMONIALS);
-export const useJobs = () => useAppwriteCollection(COLLECTIONS.JOBS);
-export const useCompanyInfo = () => useAppwriteContent(COLLECTIONS.COMPANY);
-export const useAboutInfo = () => useAppwriteContent(COLLECTIONS.ABOUT);
+export const useServices = () => useAppwriteCollection<Service>(COLLECTIONS.SERVICES);
+export const useTeam = () => useAppwriteCollection<TeamMember>(COLLECTIONS.TEAM);
+export const useTestimonials = () => useAppwriteCollection<Testimonial>(COLLECTIONS.TESTIMONIALS);
+export const useJobs = () => useAppwriteCollection<Job>(COLLECTIONS.JOBS);
+export const useCompanyInfo = () => useAppwriteContent<CompanyInfo>(COLLECTIONS.COMPANY);
+export const useAboutInfo = () => useAppwriteContent<AboutInfo>(COLLECTIONS.ABOUT);

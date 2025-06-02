@@ -1,12 +1,11 @@
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowDown } from "lucide-react";
+import { Calendar } from "lucide-react";
+import BookingRequestModal from "./BookingRequestModal";
 
 const HeroSection = () => {
-  const scrollToEnquiry = () => {
-    const enquirySection = document.getElementById('enquiry');
-    enquirySection?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-slate-900 overflow-hidden">
@@ -44,12 +43,12 @@ const HeroSection = () => {
           </p>
           
           <Button 
-            onClick={scrollToEnquiry}
+            onClick={() => setIsBookingModalOpen(true)}
             size="lg"
             className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
           >
-            Get Started Today
-            <ArrowDown className="ml-2 h-5 w-5" />
+            Book Now
+            <Calendar className="ml-2 h-5 w-5" />
           </Button>
         </div>
       </div>
@@ -60,6 +59,12 @@ const HeroSection = () => {
           <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-pulse" />
         </div>
       </div>
+
+      {/* Booking Modal */}
+      <BookingRequestModal 
+        isOpen={isBookingModalOpen} 
+        onClose={() => setIsBookingModalOpen(false)} 
+      />
     </section>
   );
 };
