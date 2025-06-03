@@ -13,17 +13,19 @@ import FloatingNavigation from "@/components/FloatingNavigation";
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden">
       <FloatingNavigation />
-      <HeroSection />
-      <StrapiAboutSection />
-      <StrapiServicesSection />
-      <IndustriesSection />
-      <WhyChooseSection />
-      <StrapiTeamSection />
-      <StrapiTestimonialsSection />
-      <StrapiCareerSection />
-      <StrapiEnquirySection />
+      <main className="w-full">
+        <HeroSection />
+        <StrapiAboutSection />
+        <StrapiServicesSection />
+        <IndustriesSection />
+        <WhyChooseSection />
+        <StrapiTeamSection />
+        <StrapiTestimonialsSection />
+        <StrapiCareerSection />
+        <StrapiEnquirySection />
+      </main>
       <StrapiFooter />
     </div>
   );
