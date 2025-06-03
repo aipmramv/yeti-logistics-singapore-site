@@ -1,7 +1,7 @@
 
 export const STRAPI_CONFIG = {
   // Change this to your Strapi API URL
-  BASE_URL: process.env.REACT_APP_STRAPI_URL || 'http://localhost:1337',
+  BASE_URL: import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337',
   
   // API endpoints
   ENDPOINTS: {
