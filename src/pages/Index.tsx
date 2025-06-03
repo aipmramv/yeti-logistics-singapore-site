@@ -1,14 +1,14 @@
 
 import HeroSection from "@/components/HeroSection";
-import AppwriteAboutSection from "@/components/AppwriteAboutSection";
-import AppwriteServicesSection from "@/components/AppwriteServicesSection";
+import WordPressAboutSection from "@/components/WordPressAboutSection";
+import WordPressServicesSection from "@/components/WordPressServicesSection";
 import IndustriesSection from "@/components/IndustriesSection";
 import WhyChooseSection from "@/components/WhyChooseSection";
-import AppwriteTeamSection from "@/components/AppwriteTeamSection";
-import AppwriteTestimonialsSection from "@/components/AppwriteTestimonialsSection";
-import AppwriteCareerSection from "@/components/AppwriteCareerSection";
-import AppwriteEnquirySection from "@/components/AppwriteEnquirySection";
-import AppwriteFooter from "@/components/AppwriteFooter";
+import WordPressTeamSection from "@/components/WordPressTeamSection";
+import WordPressTestimonialsSection from "@/components/WordPressTestimonialsSection";
+import WordPressCareerSection from "@/components/WordPressCareerSection";
+import WordPressEnquirySection from "@/components/WordPressEnquirySection";
+import WordPressFooter from "@/components/WordPressFooter";
 import FloatingNavigation from "@/components/FloatingNavigation";
 
 const Index = () => {
@@ -16,15 +16,15 @@ const Index = () => {
     <div className="min-h-screen">
       <FloatingNavigation />
       <HeroSection />
-      <AppwriteAboutSection />
-      <AppwriteServicesSection />
+      <WordPressAboutSection />
+      <WordPressServicesSection />
       <IndustriesSection />
       <WhyChooseSection />
-      <AppwriteTeamSection />
-      <AppwriteTestimonialsSection />
-      <AppwriteCareerSection />
-      <AppwriteEnquirySection />
-      <AppwriteFooter />
+      <WordPressTeamSection />
+      <WordPressTestimonialsSection />
+      <WordPressCareerSection />
+      <WordPressEnquirySection />
+      <WordPressFooter />
     </div>
   );
 };

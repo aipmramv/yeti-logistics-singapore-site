@@ -11,7 +11,9 @@ export const WORDPRESS_CONFIG = {
     SERVICES: '/wp-json/wp/v2/services',
     TEAM: '/wp-json/wp/v2/team-members',
     TESTIMONIALS: '/wp-json/wp/v2/testimonials',
-    CAREERS: '/wp-json/wp/v2/job-listings'
+    CAREERS: '/wp-json/wp/v2/job-listings',
+    COMPANY: '/wp-json/wp/v2/company-info',
+    ABOUT: '/wp-json/wp/v2/about-info'
   },
   
   // Cache settings
