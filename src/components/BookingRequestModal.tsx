@@ -5,7 +5,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -241,69 +240,71 @@ This booking request was submitted through the Yeti Logistics website.
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogTrigger asChild>
-        <Button variant="outline">Request a Booking</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[825px]">
+      <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Request a Booking</DialogTitle>
+          <DialogTitle className="text-xl font-semibold">Request a Booking</DialogTitle>
           <DialogDescription>
             Fill in the form to request a booking. We will contact you soon to
             confirm your booking details.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+        <form onSubmit={handleSubmit} className="grid gap-6 py-4">
           {/* Contact Details */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="name">Name</Label>
-              <Input
-                type="text"
-                id="name"
-                value={formData.contactDetails.name}
-                onChange={(e) => handleInputChange('contactDetails', 'name', e.target.value)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="company">Company</Label>
-              <Input
-                type="text"
-                id="company"
-                value={formData.contactDetails.company}
-                onChange={(e) => handleInputChange('contactDetails', 'company', e.target.value)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                type="email"
-                id="email"
-                value={formData.contactDetails.email}
-                onChange={(e) => handleInputChange('contactDetails', 'email', e.target.value)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="phone">Phone</Label>
-              <Input
-                type="tel"
-                id="phone"
-                value={formData.contactDetails.phone}
-                onChange={(e) => handleInputChange('contactDetails', 'phone', e.target.value)}
-              />
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-gray-900">Contact Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="name">Name *</Label>
+                <Input
+                  type="text"
+                  id="name"
+                  required
+                  value={formData.contactDetails.name}
+                  onChange={(e) => handleInputChange('contactDetails', 'name', e.target.value)}
+                />
+              </div>
+              <div>
+                <Label htmlFor="company">Company</Label>
+                <Input
+                  type="text"
+                  id="company"
+                  value={formData.contactDetails.company}
+                  onChange={(e) => handleInputChange('contactDetails', 'company', e.target.value)}
+                />
+              </div>
+              <div>
+                <Label htmlFor="email">Email *</Label>
+                <Input
+                  type="email"
+                  id="email"
+                  required
+                  value={formData.contactDetails.email}
+                  onChange={(e) => handleInputChange('contactDetails', 'email', e.target.value)}
+                />
+              </div>
+              <div>
+                <Label htmlFor="phone">Phone</Label>
+                <Input
+                  type="tel"
+                  id="phone"
+                  value={formData.contactDetails.phone}
+                  onChange={(e) => handleInputChange('contactDetails', 'phone', e.target.value)}
+                />
+              </div>
             </div>
           </div>
 
           {/* Service Type */}
-          <div>
-            <Label>Service Type</Label>
-            <div className="flex flex-wrap gap-2 mt-2">
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-gray-900">Service Type</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="supplyChain"
                   checked={formData.serviceType.supplyChain}
                   onCheckedChange={(checked) => handleInputChange('serviceType', 'supplyChain', checked)}
                 />
-                <Label htmlFor="supplyChain">Supply Chain Management</Label>
+                <Label htmlFor="supplyChain" className="text-sm">Supply Chain Management</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <Checkbox
@@ -311,7 +312,7 @@ This booking request was submitted through the Yeti Logistics website.
                   checked={formData.serviceType.coldChain}
                   onCheckedChange={(checked) => handleInputChange('serviceType', 'coldChain', checked)}
                 />
-                <Label htmlFor="coldChain">Cold Chain Logistics</Label>
+                <Label htmlFor="coldChain" className="text-sm">Cold Chain Logistics</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <Checkbox
@@ -319,7 +320,7 @@ This booking request was submitted through the Yeti Logistics website.
                   checked={formData.serviceType.inventoryManagement}
                   onCheckedChange={(checked) => handleInputChange('serviceType', 'inventoryManagement', checked)}
                 />
-                <Label htmlFor="inventoryManagement">Inventory Management</Label>
+                <Label htmlFor="inventoryManagement" className="text-sm">Inventory Management</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <Checkbox
@@ -327,7 +328,7 @@ This booking request was submitted through the Yeti Logistics website.
                   checked={formData.serviceType.b2bDelivery}
                   onCheckedChange={(checked) => handleInputChange('serviceType', 'b2bDelivery', checked)}
                 />
-                <Label htmlFor="b2bDelivery">B2B/B2C Delivery</Label>
+                <Label htmlFor="b2bDelivery" className="text-sm">B2B/B2C Delivery</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <Checkbox
@@ -335,7 +336,7 @@ This booking request was submitted through the Yeti Logistics website.
                   checked={formData.serviceType.warehousing}
                   onCheckedChange={(checked) => handleInputChange('serviceType', 'warehousing', checked)}
                 />
-                <Label htmlFor="warehousing">Warehousing Solutions</Label>
+                <Label htmlFor="warehousing" className="text-sm">Warehousing Solutions</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <Checkbox
@@ -343,27 +344,28 @@ This booking request was submitted through the Yeti Logistics website.
                   checked={formData.serviceType.others}
                   onCheckedChange={(checked) => handleInputChange('serviceType', 'others', checked)}
                 />
-                <Label htmlFor="others">Others</Label>
+                <Label htmlFor="others" className="text-sm">Others</Label>
               </div>
             </div>
+
+            {formData.serviceType.others && (
+              <div className="mt-3">
+                <Label htmlFor="otherService">Other Service</Label>
+                <Input
+                  type="text"
+                  id="otherService"
+                  placeholder="Please specify..."
+                  value={formData.otherService}
+                  onChange={(e) => handleInputChange('otherService', '', e.target.value)}
+                />
+              </div>
+            )}
           </div>
 
-          {formData.serviceType.others && (
-            <div>
-              <Label htmlFor="otherService">Other Service</Label>
-              <Input
-                type="text"
-                id="otherService"
-                value={formData.otherService}
-                onChange={(e) => handleInputChange('otherService', '', e.target.value)}
-              />
-            </div>
-          )}
-
           {/* Pickup Location */}
-          <div>
-            <Label>Pickup Location</Label>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-gray-900">Pickup Location</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="pickupAddress">Address</Label>
                 <Input
@@ -382,20 +384,20 @@ This booking request was submitted through the Yeti Logistics website.
                   onChange={(e) => handleInputChange('pickupLocation', 'contactPerson', e.target.value)}
                 />
               </div>
-              <div>
-                <Label htmlFor="pickupDateTime">Date & Time</Label>
+              <div className="md:col-span-2">
+                <Label htmlFor="pickupDateTime">Preferred Date & Time</Label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant={"outline"}
                       className={cn(
-                        "w-[240px] justify-start text-left font-normal",
+                        "w-full justify-start text-left font-normal mt-1",
                         !formData.pickupLocation.dateTime && "text-muted-foreground"
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {formData.pickupLocation.dateTime ? (
-                        format(formData.pickupLocation.dateTime, "PPP p")
+                        format(formData.pickupLocation.dateTime, "PPP")
                       ) : (
                         <span>Pick a date</span>
                       )}
@@ -406,9 +408,7 @@ This booking request was submitted through the Yeti Logistics website.
                       mode="single"
                       selected={formData.pickupLocation.dateTime}
                       onSelect={(date) => handleInputChange('pickupLocation', 'dateTime', date)}
-                      disabled={(date) =>
-                        date < new Date()
-                      }
+                      disabled={(date) => date < new Date()}
                       initialFocus
                     />
                   </PopoverContent>
@@ -418,9 +418,9 @@ This booking request was submitted through the Yeti Logistics website.
           </div>
 
           {/* Delivery Location */}
-          <div>
-            <Label>Delivery Location</Label>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-gray-900">Delivery Location</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="deliveryAddress">Address</Label>
                 <Input
@@ -439,20 +439,20 @@ This booking request was submitted through the Yeti Logistics website.
                   onChange={(e) => handleInputChange('deliveryLocation', 'contactPerson', e.target.value)}
                 />
               </div>
-              <div>
-                <Label htmlFor="deliveryDateTime">Date & Time</Label>
+              <div className="md:col-span-2">
+                <Label htmlFor="deliveryDateTime">Preferred Date & Time</Label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant={"outline"}
                       className={cn(
-                        "w-[240px] justify-start text-left font-normal",
+                        "w-full justify-start text-left font-normal mt-1",
                         !formData.deliveryLocation.dateTime && "text-muted-foreground"
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {formData.deliveryLocation.dateTime ? (
-                        format(formData.deliveryLocation.dateTime, "PPP p")
+                        format(formData.deliveryLocation.dateTime, "PPP")
                       ) : (
                         <span>Pick a date</span>
                       )}
@@ -463,9 +463,7 @@ This booking request was submitted through the Yeti Logistics website.
                       mode="single"
                       selected={formData.deliveryLocation.dateTime}
                       onSelect={(date) => handleInputChange('deliveryLocation', 'dateTime', date)}
-                      disabled={(date) =>
-                        date < new Date()
-                      }
+                      disabled={(date) => date < new Date()}
                       initialFocus
                     />
                   </PopoverContent>
@@ -475,14 +473,15 @@ This booking request was submitted through the Yeti Logistics website.
           </div>
 
           {/* Cargo Details */}
-          <div>
-            <Label>Cargo Details</Label>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-gray-900">Cargo Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="cargoDescription">Description</Label>
                 <Input
                   type="text"
                   id="cargoDescription"
+                  placeholder="e.g., Electronics, Food products"
                   value={formData.cargoDetails.description}
                   onChange={(e) => handleInputChange('cargoDetails', 'description', e.target.value)}
                 />
@@ -492,6 +491,7 @@ This booking request was submitted through the Yeti Logistics website.
                 <Input
                   type="number"
                   id="cargoTotalWeight"
+                  placeholder="0"
                   value={formData.cargoDetails.totalWeight}
                   onChange={(e) => handleInputChange('cargoDetails', 'totalWeight', e.target.value)}
                 />
@@ -501,15 +501,17 @@ This booking request was submitted through the Yeti Logistics website.
                 <Input
                   type="number"
                   id="cargoNumberOfPackages"
+                  placeholder="0"
                   value={formData.cargoDetails.numberOfPackages}
                   onChange={(e) => handleInputChange('cargoDetails', 'numberOfPackages', e.target.value)}
                 />
               </div>
               <div>
-                <Label htmlFor="cargoDimensions">Dimensions</Label>
+                <Label htmlFor="cargoDimensions">Dimensions (L x W x H)</Label>
                 <Input
                   type="text"
                   id="cargoDimensions"
+                  placeholder="e.g., 100 x 50 x 30 cm"
                   value={formData.cargoDetails.dimensions}
                   onChange={(e) => handleInputChange('cargoDetails', 'dimensions', e.target.value)}
                 />
@@ -520,7 +522,7 @@ This booking request was submitted through the Yeti Logistics website.
                   checked={formData.cargoDetails.hazardous}
                   onCheckedChange={(checked) => handleInputChange('cargoDetails', 'hazardous', checked)}
                 />
-                <Label htmlFor="cargoHazardous">Hazardous Cargo</Label>
+                <Label htmlFor="cargoHazardous" className="text-sm">Hazardous Cargo</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <Checkbox
@@ -528,23 +530,31 @@ This booking request was submitted through the Yeti Logistics website.
                   checked={formData.cargoDetails.temperatureControl}
                   onCheckedChange={(checked) => handleInputChange('cargoDetails', 'temperatureControl', checked)}
                 />
-                <Label htmlFor="cargoTemperatureControl">Temperature Control Required</Label>
+                <Label htmlFor="cargoTemperatureControl" className="text-sm">Temperature Control Required</Label>
               </div>
             </div>
           </div>
 
           {/* Special Requests */}
-          <div>
-            <Label htmlFor="specialRequests">Special Requests</Label>
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-gray-900">Special Requests</h3>
             <Textarea
               id="specialRequests"
-              placeholder="Any special requests?"
+              placeholder="Any special handling requirements or additional notes..."
               value={formData.specialRequests}
               onChange={(e) => handleInputChange('specialRequests', '', e.target.value)}
+              rows={3}
             />
           </div>
 
-          <Button type="submit">Submit</Button>
+          <div className="flex justify-end space-x-3 pt-4 border-t">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+              Submit Booking Request
+            </Button>
+          </div>
         </form>
       </DialogContent>
     </Dialog>
