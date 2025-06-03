@@ -1,122 +1,187 @@
-
-import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Calendar } from "@/components/ui/calendar";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useToast } from "@/hooks/use-toast";
-import { useCompanyInfo } from "@/hooks/useAppwriteContent";
 
 interface BookingRequestModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+import { useStrapiCompanyInfo } from "@/hooks/useStrapi";
+
 const BookingRequestModal = ({ isOpen, onClose }: BookingRequestModalProps) => {
   const { toast } = useToast();
-  const { data: companyInfo } = useCompanyInfo();
+  const { data: companyInfo } = useStrapiCompanyInfo();
   
   const [formData, setFormData] = useState({
-    // Contact Details
-    name: '',
-    companyName: '',
-    email: '',
-    phone: '',
-    
-    // Service Type
-    serviceTypes: [] as string[],
+    contactDetails: {
+      name: '',
+      company: '',
+      email: '',
+      phone: '',
+    },
+    serviceType: {
+      supplyChain: false,
+      coldChain: false,
+      inventoryManagement: false,
+      b2bDelivery: false,
+      warehousing: false,
+      others: false,
+    },
     otherService: '',
-    
-    // Pickup Location
-    pickupAddress: '',
-    pickupContact: '',
-    pickupDateTime: '',
-    
-    // Delivery Location
-    deliveryAddress: '',
-    deliveryContact: '',
-    deliveryDateTime: '',
-    
-    // Cargo Details
-    goodsDescription: '',
-    totalWeight: '',
-    numberOfPackages: '',
-    dimensions: '',
-    hazardousCargo: false,
-    temperatureControl: false,
-    
-    // Special Requests
-    specialRequests: ''
+    pickupLocation: {
+      address: '',
+      contactPerson: '',
+      dateTime: undefined,
+    },
+    deliveryLocation: {
+      address: '',
+      contactPerson: '',
+      dateTime: undefined,
+    },
+    cargoDetails: {
+      description: '',
+      totalWeight: '',
+      numberOfPackages: '',
+      dimensions: '',
+      hazardous: false,
+      temperatureControl: false,
+    },
+    specialRequests: '',
   });
 
-  const serviceOptions = ['Local Delivery', 'Import', 'Export', 'Warehousing', 'Others'];
-
-  const handleServiceTypeChange = (service: string, checked: boolean) => {
-    if (checked) {
-      setFormData(prev => ({
-        ...prev,
-        serviceTypes: [...prev.serviceTypes, service]
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        serviceTypes: prev.serviceTypes.filter(s => s !== service)
-      }));
-    }
+  const handleInputChange = (section: string, field: string, value: any) => {
+    setFormData(prev => {
+      if (section === 'contactDetails' || section === 'pickupLocation' || section === 'deliveryLocation' || section === 'cargoDetails') {
+        return {
+          ...prev,
+          [section]: {
+            ...prev[section],
+            [field]: value,
+          },
+        };
+      } else if (section === 'serviceType') {
+        return {
+          ...prev,
+          [section]: {
+            ...prev[section],
+            [field]: value,
+          },
+        };
+      } else {
+        return {
+          ...prev,
+          [section]: value,
+        };
+      }
+    });
   };
 
-  const handleInputChange = (field: string, value: string | boolean) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const resetForm = () => {
+    setFormData({
+      contactDetails: {
+        name: '',
+        company: '',
+        email: '',
+        phone: '',
+      },
+      serviceType: {
+        supplyChain: false,
+        coldChain: false,
+        inventoryManagement: false,
+        b2bDelivery: false,
+        warehousing: false,
+        others: false,
+      },
+      otherService: '',
+      pickupLocation: {
+        address: '',
+        contactPerson: '',
+        dateTime: undefined,
+      },
+      deliveryLocation: {
+        address: '',
+        contactPerson: '',
+        dateTime: undefined,
+      },
+      cargoDetails: {
+        description: '',
+        totalWeight: '',
+        numberOfPackages: '',
+        dimensions: '',
+        hazardous: false,
+        temperatureControl: false,
+      },
+      specialRequests: '',
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Create email content
-    const services = formData.serviceTypes.includes('Others') 
-      ? [...formData.serviceTypes.filter(s => s !== 'Others'), formData.otherService].filter(Boolean)
-      : formData.serviceTypes;
+    // Create booking request email content
+    const emailSubject = encodeURIComponent(`Booking Request from ${formData.contactDetails.name}`);
+    const servicesText = Object.entries(formData.serviceType)
+      .filter(([_, selected]) => selected)
+      .map(([service, _]) => service.replace(/([A-Z])/g, ' $1').trim())
+      .join(', ');
     
-    const emailSubject = encodeURIComponent(`Booking Request from ${formData.name}`);
     const emailBody = encodeURIComponent(`
-BOOKING REQUEST
+Booking Request Details:
 
-Contact Details:
-Name: ${formData.name}
-Company: ${formData.companyName || 'Not provided'}
-Email: ${formData.email}
-Phone: ${formData.phone || 'Not provided'}
+CONTACT DETAILS:
+Name: ${formData.contactDetails.name}
+Company: ${formData.contactDetails.company || 'Not provided'}
+Email: ${formData.contactDetails.email}
+Phone: ${formData.contactDetails.phone || 'Not provided'}
 
-Service Type: ${services.join(', ') || 'Not specified'}
+SERVICE TYPE:
+${servicesText || 'Not specified'}
+${formData.serviceType.others ? `Others: ${formData.otherService}` : ''}
 
-Pickup Location:
-Address: ${formData.pickupAddress}
-Contact Person: ${formData.pickupContact}
-Date & Time: ${formData.pickupDateTime}
+PICKUP LOCATION:
+Address: ${formData.pickupLocation.address || 'Not provided'}
+Contact Person: ${formData.pickupLocation.contactPerson || 'Not provided'}
+Date & Time: ${formData.pickupLocation.dateTime || 'Not provided'}
 
-Delivery Location:
-Address: ${formData.deliveryAddress}
-Contact Person: ${formData.deliveryContact}
-Date & Time: ${formData.deliveryDateTime}
+DELIVERY LOCATION:
+Address: ${formData.deliveryLocation.address || 'Not provided'}
+Contact Person: ${formData.deliveryLocation.contactPerson || 'Not provided'}
+Date & Time: ${formData.deliveryLocation.dateTime || 'Not provided'}
 
-Cargo Details:
-Description: ${formData.goodsDescription}
-Total Weight: ${formData.totalWeight} kg
-Number of Packages: ${formData.numberOfPackages}
-Dimensions: ${formData.dimensions || 'Not specified'}
-Hazardous Cargo: ${formData.hazardousCargo ? 'Yes' : 'No'}
-Temperature Control: ${formData.temperatureControl ? 'Yes' : 'No'}
+CARGO DETAILS:
+Description: ${formData.cargoDetails.description || 'Not provided'}
+Total Weight: ${formData.cargoDetails.totalWeight || 'Not provided'} kg
+Number of Packages: ${formData.cargoDetails.numberOfPackages || 'Not provided'}
+Dimensions: ${formData.cargoDetails.dimensions || 'Not provided'}
+Hazardous Cargo: ${formData.cargoDetails.hazardous ? 'Yes' : 'No'}
+Temperature Control: ${formData.cargoDetails.temperatureControl ? 'Yes' : 'No'}
 
-Special Requests:
+SPECIAL REQUESTS:
 ${formData.specialRequests || 'None'}
 
 This booking request was submitted through the Yeti Logistics website.
     `);
     
-    // Get company email
-    const contactEmail = companyInfo?.email || 'enquiry@yetilogistics.com';
+    // Get company email from Strapi or use fallback
+    const contactEmail = companyInfo?.attributes?.email || 'enquiry@yetilogistics.com';
     
     // Open email client
     window.location.href = `mailto:${contactEmail}?subject=${emailSubject}&body=${emailBody}`;
@@ -131,251 +196,355 @@ This booking request was submitted through the Yeti Logistics website.
     // Show success toast
     toast({
       title: "Thanks for booking!",
-      description: "We will contact you soon to confirm your booking request.",
+      description: "We will contact you soon to confirm your booking details.",
     });
     
     // Reset form and close modal
     setFormData({
-      name: '', companyName: '', email: '', phone: '',
-      serviceTypes: [], otherService: '',
-      pickupAddress: '', pickupContact: '', pickupDateTime: '',
-      deliveryAddress: '', deliveryContact: '', deliveryDateTime: '',
-      goodsDescription: '', totalWeight: '', numberOfPackages: '', dimensions: '',
-      hazardousCargo: false, temperatureControl: false,
-      specialRequests: ''
+      contactDetails: {
+        name: '',
+        company: '',
+        email: '',
+        phone: '',
+      },
+      serviceType: {
+        supplyChain: false,
+        coldChain: false,
+        inventoryManagement: false,
+        b2bDelivery: false,
+        warehousing: false,
+        others: false,
+      },
+      otherService: '',
+      pickupLocation: {
+        address: '',
+        contactPerson: '',
+        dateTime: undefined,
+      },
+      deliveryLocation: {
+        address: '',
+        contactPerson: '',
+        dateTime: undefined,
+      },
+      cargoDetails: {
+        description: '',
+        totalWeight: '',
+        numberOfPackages: '',
+        dimensions: '',
+        hazardous: false,
+        temperatureControl: false,
+      },
+      specialRequests: '',
     });
     onClose();
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogTrigger asChild>
+        <Button variant="outline">Request a Booking</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[825px]">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-gray-900">Booking Request Form</DialogTitle>
+          <DialogTitle>Request a Booking</DialogTitle>
+          <DialogDescription>
+            Fill in the form to request a booking. We will contact you soon to
+            confirm your booking details.
+          </DialogDescription>
         </DialogHeader>
-        
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="grid gap-4 py-4">
           {/* Contact Details */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">1. Contact Details</h3>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="name">Name *</Label>
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="companyName">Company Name</Label>
-                <Input
-                  id="companyName"
-                  value={formData.companyName}
-                  onChange={(e) => handleInputChange('companyName', e.target.value)}
-                />
-              </div>
-              <div>
-                <Label htmlFor="email">Email *</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input
-                  id="phone"
-                  value={formData.phone}
-                  onChange={(e) => handleInputChange('phone', e.target.value)}
-                />
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="name">Name</Label>
+              <Input
+                type="text"
+                id="name"
+                value={formData.contactDetails.name}
+                onChange={(e) => handleInputChange('contactDetails', 'name', e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="company">Company</Label>
+              <Input
+                type="text"
+                id="company"
+                value={formData.contactDetails.company}
+                onChange={(e) => handleInputChange('contactDetails', 'company', e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                type="email"
+                id="email"
+                value={formData.contactDetails.email}
+                onChange={(e) => handleInputChange('contactDetails', 'email', e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="phone">Phone</Label>
+              <Input
+                type="tel"
+                id="phone"
+                value={formData.contactDetails.phone}
+                onChange={(e) => handleInputChange('contactDetails', 'phone', e.target.value)}
+              />
             </div>
           </div>
 
           {/* Service Type */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">2. Service Type</h3>
-            <div className="grid md:grid-cols-3 gap-4">
-              {serviceOptions.map((service) => (
-                <div key={service} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={service}
-                    checked={formData.serviceTypes.includes(service)}
-                    onCheckedChange={(checked) => handleServiceTypeChange(service, checked as boolean)}
-                  />
-                  <Label htmlFor={service}>{service}</Label>
-                </div>
-              ))}
-            </div>
-            {formData.serviceTypes.includes('Others') && (
-              <div className="mt-4">
-                <Label htmlFor="otherService">Please specify:</Label>
-                <Input
-                  id="otherService"
-                  value={formData.otherService}
-                  onChange={(e) => handleInputChange('otherService', e.target.value)}
-                  placeholder="Specify other service..."
+            <Label>Service Type</Label>
+            <div className="flex flex-wrap gap-2 mt-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="supplyChain"
+                  checked={formData.serviceType.supplyChain}
+                  onCheckedChange={(checked) => handleInputChange('serviceType', 'supplyChain', checked)}
                 />
+                <Label htmlFor="supplyChain">Supply Chain Management</Label>
               </div>
-            )}
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="coldChain"
+                  checked={formData.serviceType.coldChain}
+                  onCheckedChange={(checked) => handleInputChange('serviceType', 'coldChain', checked)}
+                />
+                <Label htmlFor="coldChain">Cold Chain Logistics</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="inventoryManagement"
+                  checked={formData.serviceType.inventoryManagement}
+                  onCheckedChange={(checked) => handleInputChange('serviceType', 'inventoryManagement', checked)}
+                />
+                <Label htmlFor="inventoryManagement">Inventory Management</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="b2bDelivery"
+                  checked={formData.serviceType.b2bDelivery}
+                  onCheckedChange={(checked) => handleInputChange('serviceType', 'b2bDelivery', checked)}
+                />
+                <Label htmlFor="b2bDelivery">B2B/B2C Delivery</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="warehousing"
+                  checked={formData.serviceType.warehousing}
+                  onCheckedChange={(checked) => handleInputChange('serviceType', 'warehousing', checked)}
+                />
+                <Label htmlFor="warehousing">Warehousing Solutions</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="others"
+                  checked={formData.serviceType.others}
+                  onCheckedChange={(checked) => handleInputChange('serviceType', 'others', checked)}
+                />
+                <Label htmlFor="others">Others</Label>
+              </div>
+            </div>
           </div>
+
+          {formData.serviceType.others && (
+            <div>
+              <Label htmlFor="otherService">Other Service</Label>
+              <Input
+                type="text"
+                id="otherService"
+                value={formData.otherService}
+                onChange={(e) => handleInputChange('otherService', '', e.target.value)}
+              />
+            </div>
+          )}
 
           {/* Pickup Location */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">3. Pickup Location</h3>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="md:col-span-2">
+            <Label>Pickup Location</Label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+              <div>
                 <Label htmlFor="pickupAddress">Address</Label>
-                <Textarea
+                <Input
+                  type="text"
                   id="pickupAddress"
-                  value={formData.pickupAddress}
-                  onChange={(e) => handleInputChange('pickupAddress', e.target.value)}
-                  rows={2}
+                  value={formData.pickupLocation.address}
+                  onChange={(e) => handleInputChange('pickupLocation', 'address', e.target.value)}
                 />
               </div>
               <div>
-                <Label htmlFor="pickupContact">Contact Person</Label>
+                <Label htmlFor="pickupContactPerson">Contact Person</Label>
                 <Input
-                  id="pickupContact"
-                  value={formData.pickupContact}
-                  onChange={(e) => handleInputChange('pickupContact', e.target.value)}
+                  type="text"
+                  id="pickupContactPerson"
+                  value={formData.pickupLocation.contactPerson}
+                  onChange={(e) => handleInputChange('pickupLocation', 'contactPerson', e.target.value)}
                 />
               </div>
               <div>
                 <Label htmlFor="pickupDateTime">Date & Time</Label>
-                <Input
-                  id="pickupDateTime"
-                  type="datetime-local"
-                  value={formData.pickupDateTime}
-                  onChange={(e) => handleInputChange('pickupDateTime', e.target.value)}
-                />
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[240px] justify-start text-left font-normal",
+                        !formData.pickupLocation.dateTime && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {formData.pickupLocation.dateTime ? (
+                        format(formData.pickupLocation.dateTime, "PPP p")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={formData.pickupLocation.dateTime}
+                      onSelect={(date) => handleInputChange('pickupLocation', 'dateTime', date)}
+                      disabled={(date) =>
+                        date < new Date()
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
               </div>
             </div>
           </div>
 
           {/* Delivery Location */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">4. Delivery Location</h3>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="md:col-span-2">
+            <Label>Delivery Location</Label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+              <div>
                 <Label htmlFor="deliveryAddress">Address</Label>
-                <Textarea
+                <Input
+                  type="text"
                   id="deliveryAddress"
-                  value={formData.deliveryAddress}
-                  onChange={(e) => handleInputChange('deliveryAddress', e.target.value)}
-                  rows={2}
+                  value={formData.deliveryLocation.address}
+                  onChange={(e) => handleInputChange('deliveryLocation', 'address', e.target.value)}
                 />
               </div>
               <div>
-                <Label htmlFor="deliveryContact">Contact Person</Label>
+                <Label htmlFor="deliveryContactPerson">Contact Person</Label>
                 <Input
-                  id="deliveryContact"
-                  value={formData.deliveryContact}
-                  onChange={(e) => handleInputChange('deliveryContact', e.target.value)}
+                  type="text"
+                  id="deliveryContactPerson"
+                  value={formData.deliveryLocation.contactPerson}
+                  onChange={(e) => handleInputChange('deliveryLocation', 'contactPerson', e.target.value)}
                 />
               </div>
               <div>
                 <Label htmlFor="deliveryDateTime">Date & Time</Label>
-                <Input
-                  id="deliveryDateTime"
-                  type="datetime-local"
-                  value={formData.deliveryDateTime}
-                  onChange={(e) => handleInputChange('deliveryDateTime', e.target.value)}
-                />
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[240px] justify-start text-left font-normal",
+                        !formData.deliveryLocation.dateTime && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {formData.deliveryLocation.dateTime ? (
+                        format(formData.deliveryLocation.dateTime, "PPP p")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={formData.deliveryLocation.dateTime}
+                      onSelect={(date) => handleInputChange('deliveryLocation', 'dateTime', date)}
+                      disabled={(date) =>
+                        date < new Date()
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
               </div>
             </div>
           </div>
 
           {/* Cargo Details */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">5. Cargo Details</h3>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="md:col-span-2">
-                <Label htmlFor="goodsDescription">Description of Goods</Label>
-                <Textarea
-                  id="goodsDescription"
-                  value={formData.goodsDescription}
-                  onChange={(e) => handleInputChange('goodsDescription', e.target.value)}
-                  rows={3}
+            <Label>Cargo Details</Label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+              <div>
+                <Label htmlFor="cargoDescription">Description</Label>
+                <Input
+                  type="text"
+                  id="cargoDescription"
+                  value={formData.cargoDetails.description}
+                  onChange={(e) => handleInputChange('cargoDetails', 'description', e.target.value)}
                 />
               </div>
               <div>
-                <Label htmlFor="totalWeight">Total Weight (kg)</Label>
+                <Label htmlFor="cargoTotalWeight">Total Weight (kg)</Label>
                 <Input
-                  id="totalWeight"
                   type="number"
-                  value={formData.totalWeight}
-                  onChange={(e) => handleInputChange('totalWeight', e.target.value)}
+                  id="cargoTotalWeight"
+                  value={formData.cargoDetails.totalWeight}
+                  onChange={(e) => handleInputChange('cargoDetails', 'totalWeight', e.target.value)}
                 />
               </div>
               <div>
-                <Label htmlFor="numberOfPackages">Number of Packages</Label>
+                <Label htmlFor="cargoNumberOfPackages">Number of Packages</Label>
                 <Input
-                  id="numberOfPackages"
                   type="number"
-                  value={formData.numberOfPackages}
-                  onChange={(e) => handleInputChange('numberOfPackages', e.target.value)}
+                  id="cargoNumberOfPackages"
+                  value={formData.cargoDetails.numberOfPackages}
+                  onChange={(e) => handleInputChange('cargoDetails', 'numberOfPackages', e.target.value)}
                 />
               </div>
-              <div className="md:col-span-2">
-                <Label htmlFor="dimensions">Dimensions (if known)</Label>
+              <div>
+                <Label htmlFor="cargoDimensions">Dimensions</Label>
                 <Input
-                  id="dimensions"
-                  value={formData.dimensions}
-                  onChange={(e) => handleInputChange('dimensions', e.target.value)}
-                  placeholder="L x W x H"
+                  type="text"
+                  id="cargoDimensions"
+                  value={formData.cargoDetails.dimensions}
+                  onChange={(e) => handleInputChange('cargoDetails', 'dimensions', e.target.value)}
                 />
               </div>
               <div className="flex items-center space-x-2">
                 <Checkbox
-                  id="hazardousCargo"
-                  checked={formData.hazardousCargo}
-                  onCheckedChange={(checked) => handleInputChange('hazardousCargo', checked as boolean)}
+                  id="cargoHazardous"
+                  checked={formData.cargoDetails.hazardous}
+                  onCheckedChange={(checked) => handleInputChange('cargoDetails', 'hazardous', checked)}
                 />
-                <Label htmlFor="hazardousCargo">Hazardous Cargo</Label>
+                <Label htmlFor="cargoHazardous">Hazardous Cargo</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <Checkbox
-                  id="temperatureControl"
-                  checked={formData.temperatureControl}
-                  onCheckedChange={(checked) => handleInputChange('temperatureControl', checked as boolean)}
+                  id="cargoTemperatureControl"
+                  checked={formData.cargoDetails.temperatureControl}
+                  onCheckedChange={(checked) => handleInputChange('cargoDetails', 'temperatureControl', checked)}
                 />
-                <Label htmlFor="temperatureControl">Temperature Control Needed</Label>
+                <Label htmlFor="cargoTemperatureControl">Temperature Control Required</Label>
               </div>
             </div>
           </div>
 
           {/* Special Requests */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">6. Special Requests</h3>
+            <Label htmlFor="specialRequests">Special Requests</Label>
             <Textarea
+              id="specialRequests"
+              placeholder="Any special requests?"
               value={formData.specialRequests}
-              onChange={(e) => handleInputChange('specialRequests', e.target.value)}
-              placeholder="e.g., tailgate, manpower, permit help"
-              rows={3}
+              onChange={(e) => handleInputChange('specialRequests', '', e.target.value)}
             />
           </div>
 
-          {/* Upload File */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">7. Upload File (Optional)</h3>
-            <Input type="file" />
-          </div>
-
-          {/* Submit */}
-          <div className="flex justify-end space-x-4 pt-4">
-            <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-              Submit Request
-            </Button>
-          </div>
+          <Button type="submit">Submit</Button>
         </form>
       </DialogContent>
     </Dialog>

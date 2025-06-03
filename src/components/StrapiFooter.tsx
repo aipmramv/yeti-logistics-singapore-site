@@ -1,9 +1,9 @@
 
 import { Mail, Phone, MapPin } from "lucide-react";
-import { useWordPressCompanyInfo } from "@/hooks/useWordPress";
+import { useStrapiCompanyInfo } from "@/hooks/useStrapi";
 
-const WordPressFooter = () => {
-  const { data: companyInfo } = useWordPressCompanyInfo();
+const StrapiFooter = () => {
+  const { data: companyInfo } = useStrapiCompanyInfo();
 
   // Fallback company info
   const fallbackCompany = {
@@ -15,7 +15,7 @@ const WordPressFooter = () => {
     founded: 2004
   };
 
-  const displayCompany = companyInfo?.acf || fallbackCompany;
+  const displayCompany = companyInfo?.attributes || fallbackCompany;
 
   return (
     <footer className="bg-gray-900 text-white">
@@ -75,4 +75,4 @@ const WordPressFooter = () => {
   );
 };
 
-export default WordPressFooter;
+export default StrapiFooter;

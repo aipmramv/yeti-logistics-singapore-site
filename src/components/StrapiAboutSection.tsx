@@ -1,8 +1,9 @@
 
-import { useWordPressAboutInfo } from '@/hooks/useWordPress';
+import { useStrapiAboutInfo } from '@/hooks/useStrapi';
+import { STRAPI_CONFIG } from '@/config/strapi';
 
-const WordPressAboutSection = () => {
-  const { data: aboutContent, loading, error } = useWordPressAboutInfo();
+const StrapiAboutSection = () => {
+  const { data: aboutContent, loading, error } = useStrapiAboutInfo();
 
   // Fallback content
   const fallbackContent = {
@@ -14,7 +15,10 @@ const WordPressAboutSection = () => {
     image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=600&h=800&fit=crop"
   };
 
-  const displayContent = aboutContent?.acf || fallbackContent;
+  const displayContent = aboutContent?.attributes || fallbackContent;
+  const imageUrl = aboutContent?.attributes?.image?.data?.attributes?.url 
+    ? `${STRAPI_CONFIG.BASE_URL}${aboutContent.attributes.image.data.attributes.url}`
+    : fallbackContent.image;
 
   if (loading) {
     return (
@@ -75,7 +79,7 @@ const WordPressAboutSection = () => {
           
           <div className="lg:order-first">
             <img 
-              src={displayContent.image}
+              src={imageUrl}
               alt="Modern logistics operations"
               className="rounded-2xl shadow-2xl w-full h-[600px] object-cover"
             />
@@ -99,7 +103,7 @@ const WordPressAboutSection = () => {
 
         {error && (
           <div className="mt-8 text-center text-sm text-gray-500">
-            Using fallback content. WordPress status: {error}
+            Using fallback content. Strapi status: {error}
           </div>
         )}
       </div>
@@ -107,4 +111,4 @@ const WordPressAboutSection = () => {
   );
 };
 
-export default WordPressAboutSection;
+export default StrapiAboutSection;

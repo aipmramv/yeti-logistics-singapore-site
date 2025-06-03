@@ -1,35 +1,36 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { useWordPressTeam } from '@/hooks/useWordPress';
+import { useStrapiTeam } from '@/hooks/useStrapi';
+import { STRAPI_CONFIG } from '@/config/strapi';
 
-const WordPressTeamSection = () => {
-  const { data: teamMembers, loading, error } = useWordPressTeam();
+const StrapiTeamSection = () => {
+  const { data: teamMembers, loading, error } = useStrapiTeam();
 
   // Fallback team members
   const fallbackTeamMembers = [
     {
-      acf: {
+      attributes: {
         name: "Mr. Vimalasan",
         position: "Director",
-        image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+        image: { data: { attributes: { url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face" } } },
         bio: "Leading strategic vision and company growth with over 20 years of industry experience.",
         order: 1
       }
     },
     {
-      acf: {
+      attributes: {
         name: "Mr. Louis Tan Chek Wei",
         position: "Director",
-        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+        image: { data: { attributes: { url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face" } } },
         bio: "Overseeing operations and ensuring excellence in service delivery across all departments.",
         order: 2
       }
     },
     {
-      acf: {
+      attributes: {
         name: "Mr. RishiNathan",
         position: "Operations Manager",
-        image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face",
+        image: { data: { attributes: { url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face" } } },
         bio: "Managing day-to-day operations and optimizing logistics processes for maximum efficiency.",
         order: 3
       }
@@ -37,7 +38,7 @@ const WordPressTeamSection = () => {
   ];
 
   const displayTeamMembers = (teamMembers && teamMembers.length > 0) ? teamMembers : fallbackTeamMembers;
-  const sortedTeamMembers = displayTeamMembers.sort((a, b) => (a.acf?.order || 0) - (b.acf?.order || 0));
+  const sortedTeamMembers = displayTeamMembers.sort((a, b) => (a.attributes?.order || 0) - (b.attributes?.order || 0));
 
   if (loading) {
     return (
@@ -80,36 +81,42 @@ const WordPressTeamSection = () => {
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {sortedTeamMembers.map((member, index) => (
-            <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden">
-              <CardContent className="p-0">
-                <div className="relative overflow-hidden">
-                  <img 
-                    src={member.acf?.image}
-                    alt={member.acf?.name}
-                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-                <div className="p-6 text-center">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    {member.acf?.name}
-                  </h3>
-                  <p className="text-blue-600 font-semibold mb-4">
-                    {member.acf?.position}
-                  </p>
-                  <p className="text-gray-600 leading-relaxed">
-                    {member.acf?.bio}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+          {sortedTeamMembers.map((member, index) => {
+            const imageUrl = member.attributes.image?.data?.attributes?.url 
+              ? `${STRAPI_CONFIG.BASE_URL}${member.attributes.image.data.attributes.url}`
+              : member.attributes.image?.data?.attributes?.url;
+              
+            return (
+              <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden">
+                <CardContent className="p-0">
+                  <div className="relative overflow-hidden">
+                    <img 
+                      src={imageUrl}
+                      alt={member.attributes?.name}
+                      className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                  <div className="p-6 text-center">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+                      {member.attributes?.name}
+                    </h3>
+                    <p className="text-blue-600 font-semibold mb-4">
+                      {member.attributes?.position}
+                    </p>
+                    <p className="text-gray-600 leading-relaxed">
+                      {member.attributes?.bio}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
 
         {error && (
           <div className="mt-8 text-center text-sm text-gray-500">
-            Using fallback content. WordPress status: {error}
+            Using fallback content. Strapi status: {error}
           </div>
         )}
       </div>
@@ -117,4 +124,4 @@ const WordPressTeamSection = () => {
   );
 };
 
-export default WordPressTeamSection;
+export default StrapiTeamSection;

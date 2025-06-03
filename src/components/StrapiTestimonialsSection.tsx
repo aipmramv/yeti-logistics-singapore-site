@@ -1,43 +1,40 @@
 
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { useTestimonials } from '@/hooks/useAppwriteContent';
+import { useStrapiTestimonials } from '@/hooks/useStrapi';
 
-interface Testimonial {
-  company: string;
-  name: string;
-  position: string;
-  message: string;
-  rating: number;
-  image?: string;
-}
-
-const AppwriteTestimonialsSection = () => {
-  const { data: testimonials, loading, error } = useTestimonials();
+const StrapiTestimonialsSection = () => {
+  const { data: testimonials, loading, error } = useStrapiTestimonials();
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   
   // Fallback testimonials
   const fallbackTestimonials = [
     {
-      message: "Yeti Logistics has been our trusted partner for over 5 years. Their cold chain solutions have helped us maintain product quality while expanding our market reach across Singapore.",
-      name: "Sarah Chen",
-      company: "Fresh Food Distributors Pte Ltd",
-      position: "Operations Director",
-      rating: 5
+      attributes: {
+        message: "Yeti Logistics has been our trusted partner for over 5 years. Their cold chain solutions have helped us maintain product quality while expanding our market reach across Singapore.",
+        name: "Sarah Chen",
+        company: "Fresh Food Distributors Pte Ltd",
+        position: "Operations Director",
+        rating: 5
+      }
     },
     {
-      message: "The reliability and professionalism of Yeti Logistics is unmatched. They handle our time-sensitive deliveries with precision and care, making them an invaluable part of our supply chain.",
-      name: "David Kumar",
-      company: "Singapore Food Solutions",
-      position: "Supply Chain Manager",
-      rating: 5
+      attributes: {
+        message: "The reliability and professionalism of Yeti Logistics is unmatched. They handle our time-sensitive deliveries with precision and care, making them an invaluable part of our supply chain.",
+        name: "David Kumar",
+        company: "Singapore Food Solutions",
+        position: "Supply Chain Manager",
+        rating: 5
+      }
     },
     {
-      message: "From warehousing to last-mile delivery, Yeti Logistics provides comprehensive solutions that have streamlined our operations and reduced costs significantly.",
-      name: "Michelle Wong",
-      company: "Premium Grocers Singapore",
-      position: "CEO",
-      rating: 5
+      attributes: {
+        message: "From warehousing to last-mile delivery, Yeti Logistics provides comprehensive solutions that have streamlined our operations and reduced costs significantly.",
+        name: "Michelle Wong",
+        company: "Premium Grocers Singapore",
+        position: "CEO",
+        rating: 5
+      }
     }
   ];
 
@@ -92,18 +89,18 @@ const AppwriteTestimonialsSection = () => {
             </div>
             
             <blockquote className="text-xl sm:text-2xl font-medium leading-relaxed mb-8 text-white">
-              "{displayTestimonials[currentTestimonial]?.message}"
+              "{displayTestimonials[currentTestimonial]?.attributes?.message}"
             </blockquote>
             
             <div className="border-t border-white/20 pt-6">
               <div className="font-bold text-lg text-blue-200">
-                {displayTestimonials[currentTestimonial]?.name}
+                {displayTestimonials[currentTestimonial]?.attributes?.name}
               </div>
               <div className="text-blue-300">
-                {displayTestimonials[currentTestimonial]?.position}
+                {displayTestimonials[currentTestimonial]?.attributes?.position}
               </div>
               <div className="text-blue-400 text-sm">
-                {displayTestimonials[currentTestimonial]?.company}
+                {displayTestimonials[currentTestimonial]?.attributes?.company}
               </div>
             </div>
           </CardContent>
@@ -123,7 +120,7 @@ const AppwriteTestimonialsSection = () => {
 
         {error && (
           <div className="mt-8 text-center text-sm text-blue-200">
-            Using fallback content. Appwrite status: {error}
+            Using fallback content. Strapi status: {error}
           </div>
         )}
       </div>
@@ -131,4 +128,4 @@ const AppwriteTestimonialsSection = () => {
   );
 };
 
-export default AppwriteTestimonialsSection;
+export default StrapiTestimonialsSection;

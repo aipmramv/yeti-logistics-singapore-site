@@ -1,14 +1,14 @@
 
 import HeroSection from "@/components/HeroSection";
-import WordPressAboutSection from "@/components/WordPressAboutSection";
-import WordPressServicesSection from "@/components/WordPressServicesSection";
+import StrapiAboutSection from "@/components/StrapiAboutSection";
+import StrapiServicesSection from "@/components/StrapiServicesSection";
 import IndustriesSection from "@/components/IndustriesSection";
 import WhyChooseSection from "@/components/WhyChooseSection";
-import WordPressTeamSection from "@/components/WordPressTeamSection";
-import WordPressTestimonialsSection from "@/components/WordPressTestimonialsSection";
-import WordPressCareerSection from "@/components/WordPressCareerSection";
-import WordPressEnquirySection from "@/components/WordPressEnquirySection";
-import WordPressFooter from "@/components/WordPressFooter";
+import StrapiTeamSection from "@/components/StrapiTeamSection";
+import StrapiTestimonialsSection from "@/components/StrapiTestimonialsSection";
+import StrapiCareerSection from "@/components/StrapiCareerSection";
+import StrapiEnquirySection from "@/components/StrapiEnquirySection";
+import StrapiFooter from "@/components/StrapiFooter";
 import FloatingNavigation from "@/components/FloatingNavigation";
 
 const Index = () => {
@@ -16,15 +16,15 @@ const Index = () => {
     <div className="min-h-screen">
       <FloatingNavigation />
       <HeroSection />
-      <WordPressAboutSection />
-      <WordPressServicesSection />
+      <StrapiAboutSection />
+      <StrapiServicesSection />
       <IndustriesSection />
       <WhyChooseSection />
-      <WordPressTeamSection />
-      <WordPressTestimonialsSection />
-      <WordPressCareerSection />
-      <WordPressEnquirySection />
-      <WordPressFooter />
+      <StrapiTeamSection />
+      <StrapiTestimonialsSection />
+      <StrapiCareerSection />
+      <StrapiEnquirySection />
+      <StrapiFooter />
     </div>
   );
 };

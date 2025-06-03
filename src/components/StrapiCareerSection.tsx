@@ -2,54 +2,49 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Clock } from "lucide-react";
-import { useJobs } from '@/hooks/useAppwriteContent';
+import { useStrapiJobs } from '@/hooks/useStrapi';
 
-interface Job {
-  title: string;
-  department: string;
-  location: string;
-  type: string;
-  description: string;
-  requirements: string;
-  benefits?: string;
-  published: boolean;
-}
-
-const AppwriteCareerSection = () => {
-  const { data: jobs, loading, error } = useJobs();
+const StrapiCareerSection = () => {
+  const { data: jobs, loading, error } = useStrapiJobs();
 
   // Fallback jobs
   const fallbackJobs = [
     {
-      title: "Class 3 Drivers",
-      type: "Full-time",
-      location: "Singapore",
-      department: "Operations",
-      description: "Join our team of professional drivers and be part of our reliable delivery network. Valid Class 3 license required.",
-      requirements: "Valid Class 3 driving license\nClean driving record\nCustomer service oriented\nPhysical fitness",
-      published: true
+      attributes: {
+        title: "Class 3 Drivers",
+        type: "Full-time",
+        location: "Singapore",
+        department: "Operations",
+        description: "Join our team of professional drivers and be part of our reliable delivery network. Valid Class 3 license required.",
+        requirements: "Valid Class 3 driving license\nClean driving record\nCustomer service oriented\nPhysical fitness",
+        published: true
+      }
     },
     {
-      title: "Warehouse Packers",
-      type: "Full-time",
-      location: "Singapore",
-      department: "Warehouse",
-      description: "Work in our modern warehouse facilities handling packaging and inventory management with growth opportunities.",
-      requirements: "Physical ability to lift packages\nAttention to detail\nTeam player\nPrevious warehouse experience preferred",
-      published: true
+      attributes: {
+        title: "Warehouse Packers",
+        type: "Full-time",
+        location: "Singapore",
+        department: "Warehouse",
+        description: "Work in our modern warehouse facilities handling packaging and inventory management with growth opportunities.",
+        requirements: "Physical ability to lift packages\nAttention to detail\nTeam player\nPrevious warehouse experience preferred",
+        published: true
+      }
     },
     {
-      title: "Logistics Coordinator",
-      type: "Full-time",
-      location: "Singapore",
-      department: "Operations",
-      description: "Coordinate logistics operations and ensure smooth supply chain processes. Great opportunity for career advancement.",
-      requirements: "Logistics or supply chain experience\nStrong communication skills\nComputer proficiency\nProblem-solving abilities",
-      published: true
+      attributes: {
+        title: "Logistics Coordinator",
+        type: "Full-time",
+        location: "Singapore",
+        department: "Operations",
+        description: "Coordinate logistics operations and ensure smooth supply chain processes. Great opportunity for career advancement.",
+        requirements: "Logistics or supply chain experience\nStrong communication skills\nComputer proficiency\nProblem-solving abilities",
+        published: true
+      }
     }
   ];
 
-  const displayJobs = (jobs && jobs.length > 0) ? jobs.filter(job => job.published) : fallbackJobs;
+  const displayJobs = (jobs && jobs.length > 0) ? jobs.filter(job => job.attributes?.published) : fallbackJobs;
 
   const handleApply = (jobTitle: string) => {
     const subject = encodeURIComponent(`Application for ${jobTitle} Position`);
@@ -116,28 +111,28 @@ Best regards,`);
               <CardContent className="p-6">
                 <div className="mb-4">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    {job.title}
+                    {job.attributes.title}
                   </h3>
                   <div className="flex flex-wrap gap-2 text-sm text-gray-600">
                     <span className="flex items-center gap-1">
                       <Clock className="w-4 h-4" />
-                      {job.type}
+                      {job.attributes?.type}
                     </span>
                     <span className="flex items-center gap-1">
                       <MapPin className="w-4 h-4" />
-                      {job.location}
+                      {job.attributes?.location}
                     </span>
                   </div>
                 </div>
                 
                 <p className="text-gray-700 mb-4 leading-relaxed">
-                  {job.description}
+                  {job.attributes?.description}
                 </p>
                 
                 <div className="mb-6">
                   <h4 className="font-semibold text-gray-900 mb-2">Requirements:</h4>
                   <div className="text-sm text-gray-600 space-y-1">
-                    {job.requirements.split('\n').map((req, reqIndex) => (
+                    {job.attributes?.requirements?.split('\n').map((req: string, reqIndex: number) => (
                       <div key={reqIndex} className="flex items-start gap-2">
                         <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 flex-shrink-0" />
                         {req}
@@ -147,7 +142,7 @@ Best regards,`);
                 </div>
                 
                 <Button 
-                  onClick={() => handleApply(job.title)}
+                  onClick={() => handleApply(job.attributes.title)}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white transition-colors duration-300"
                 >
                   Apply Now
@@ -172,7 +167,7 @@ Best regards,`);
 
         {error && (
           <div className="mt-8 text-center text-sm text-gray-500">
-            Using fallback content. Appwrite status: {error}
+            Using fallback content. Strapi status: {error}
           </div>
         )}
       </div>
@@ -180,4 +175,4 @@ Best regards,`);
   );
 };
 
-export default AppwriteCareerSection;
+export default StrapiCareerSection;

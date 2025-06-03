@@ -1,52 +1,52 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Package, Truck, Warehouse, Timer, Package2 } from "lucide-react";
-import { useWordPressServices } from '@/hooks/useWordPress';
+import { useStrapiServices } from '@/hooks/useStrapi';
 
-const WordPressServicesSection = () => {
-  const { data: services, loading, error } = useWordPressServices();
+const StrapiServicesSection = () => {
+  const { data: services, loading, error } = useStrapiServices();
 
   // Fallback services
   const fallbackServices = [
     {
-      acf: {
+      attributes: {
+        title: "Supply Chain Management",
+        description: "End-to-end supply chain optimization with real-time tracking and analytics for maximum efficiency.",
         icon_key: "supply-chain",
         order: 1
-      },
-      title: { rendered: "Supply Chain Management" },
-      content: { rendered: "End-to-end supply chain optimization with real-time tracking and analytics for maximum efficiency." }
+      }
     },
     {
-      acf: {
+      attributes: {
+        title: "Cold Chain Logistics",
+        description: "Temperature-controlled transportation and storage solutions ensuring product integrity from origin to destination.",
         icon_key: "cold-chain",
         order: 2
-      },
-      title: { rendered: "Cold Chain Logistics" },
-      content: { rendered: "Temperature-controlled transportation and storage solutions ensuring product integrity from origin to destination." }
+      }
     },
     {
-      acf: {
+      attributes: {
+        title: "Inventory Management",
+        description: "Smart inventory solutions with automated tracking, real-time updates, and optimized stock levels.",
         icon_key: "inventory",
         order: 3
-      },
-      title: { rendered: "Inventory Management" },
-      content: { rendered: "Smart inventory solutions with automated tracking, real-time updates, and optimized stock levels." }
+      }
     },
     {
-      acf: {
+      attributes: {
+        title: "B2B/B2C Delivery",
+        description: "Reliable delivery services for both business and consumer markets with flexible scheduling options.",
         icon_key: "delivery",
         order: 4
-      },
-      title: { rendered: "B2B/B2C Delivery" },
-      content: { rendered: "Reliable delivery services for both business and consumer markets with flexible scheduling options." }
+      }
     },
     {
-      acf: {
+      attributes: {
+        title: "Warehousing Solutions",
+        description: "State-of-the-art warehousing facilities with climate control and advanced security systems.",
         icon_key: "warehousing",
         order: 5
-      },
-      title: { rendered: "Warehousing Solutions" },
-      content: { rendered: "State-of-the-art warehousing facilities with climate control and advanced security systems." }
+      }
     }
   ];
 
@@ -59,7 +59,7 @@ const WordPressServicesSection = () => {
   };
 
   const displayServices = (services && services.length > 0) ? services : fallbackServices;
-  const sortedServices = displayServices.sort((a, b) => (a.acf?.order || 0) - (b.acf?.order || 0));
+  const sortedServices = displayServices.sort((a, b) => (a.attributes?.order || 0) - (b.attributes?.order || 0));
 
   if (loading) {
     return (
@@ -103,7 +103,7 @@ const WordPressServicesSection = () => {
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {sortedServices.map((service, index) => {
-            const IconComponent = iconMap[service.acf?.icon_key] || Package;
+            const IconComponent = iconMap[service.attributes?.icon_key] || Package;
             return (
               <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-0 shadow-lg">
                 <CardContent className="p-8 text-center">
@@ -111,10 +111,10 @@ const WordPressServicesSection = () => {
                     <IconComponent className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors duration-300" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-4">
-                    {service.title.rendered}
+                    {service.attributes.title}
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
-                    {service.content.rendered.replace(/<[^>]*>/g, '')}
+                    {service.attributes.description}
                   </p>
                 </CardContent>
               </Card>
@@ -124,7 +124,7 @@ const WordPressServicesSection = () => {
 
         {error && (
           <div className="mt-8 text-center text-sm text-gray-500">
-            Using fallback content. WordPress status: {error}
+            Using fallback content. Strapi status: {error}
           </div>
         )}
       </div>
@@ -132,4 +132,4 @@ const WordPressServicesSection = () => {
   );
 };
 
-export default WordPressServicesSection;
+export default StrapiServicesSection;
