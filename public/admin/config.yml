@@ -1,0 +1,77 @@
+backend:
+  name: github
+  repo: owner/yeti-logistics-singapore-site
+  branch: main
+media_folder: "public/lovable-uploads"
+public_folder: "/lovable-uploads"
+collections:
+  - name: "pages"
+    label: "Pages"
+    files:
+      - file: "content/pages/about.md"
+        label: "About Page"
+        name: "about"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Story", name: "story", widget: "text" }
+          - { label: "Mission", name: "mission", widget: "text" }
+          - { label: "Vision", name: "vision", widget: "text" }
+          - { label: "Years Experience", name: "years_experience", widget: "string" }
+          - { label: "Image", name: "image", widget: "string" }
+      - file: "content/pages/company.md"
+        label: "Company Info"
+        name: "company"
+        fields:
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Address", name: "address", widget: "text" }
+          - { label: "Phone", name: "phone", widget: "string" }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Registration", name: "registration", widget: "string" }
+          - { label: "Founded", name: "founded", widget: "number" }
+  - name: "services"
+    label: "Services"
+    folder: "content/services"
+    create: false
+    identifier_field: "title"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Icon Key", name: "icon_key", widget: "string" }
+      - { label: "Order", name: "order", widget: "number" }
+  - name: "team"
+    label: "Team"
+    folder: "content/team"
+    create: false
+    identifier_field: "name"
+    fields:
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Position", name: "position", widget: "string" }
+      - { label: "Bio", name: "bio", widget: "text" }
+      - { label: "Image", name: "image", widget: "string" }
+      - { label: "Order", name: "order", widget: "number" }
+  - name: "testimonials"
+    label: "Testimonials"
+    folder: "content/testimonials"
+    create: false
+    identifier_field: "company"
+    fields:
+      - { label: "Company", name: "company", widget: "string" }
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Position", name: "position", widget: "string" }
+      - { label: "Message", name: "message", widget: "text" }
+      - { label: "Rating", name: "rating", widget: "number" }
+  - name: "jobs"
+    label: "Jobs"
+    folder: "content/jobs"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: "title"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Department", name: "department", widget: "string" }
+      - { label: "Location", name: "location", widget: "string" }
+      - { label: "Type", name: "type", widget: "string" }
+      - { label: "Published", name: "published", widget: "boolean" }
+      - { label: "Description", name: "description", widget: "markdown" }
+      - { label: "Requirements", name: "requirements", widget: "markdown" }
+      - { label: "Benefits", name: "benefits", widget: "markdown" }
