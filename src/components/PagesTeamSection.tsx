@@ -1,6 +1,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { useDecapCollection } from '@/hooks/useDecapContent';
+import { usePagesCollection } from '@/hooks/usePagesContent';
 
 interface TeamMember {
   name: string;
@@ -10,8 +10,8 @@ interface TeamMember {
   order: number;
 }
 
-const DecapTeamSection = () => {
-  const { data: teamMembers, loading, error } = useDecapCollection<TeamMember>('team');
+const PagesTeamSection = () => {
+  const { data: teamMembers, loading, error } = usePagesCollection<TeamMember>('team');
 
   // Fallback team members
   const fallbackTeamMembers = [
@@ -119,4 +119,4 @@ const DecapTeamSection = () => {
   );
 };
 
-export default DecapTeamSection;
+export default PagesTeamSection;

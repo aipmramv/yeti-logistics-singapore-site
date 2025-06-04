@@ -15,13 +15,13 @@ const parseFrontmatter = (content: string) => {
   if (!match) return {};
   
   const frontmatter = match[1];
-  const data: any = {};
+  const data: Record<string, unknown> = {};
   
   frontmatter.split('\n').forEach(line => {
     const colonIndex = line.indexOf(':');
     if (colonIndex > -1) {
       const key = line.substring(0, colonIndex).trim();
-      let value: any = line.substring(colonIndex + 1).trim();
+      let value: string | number | boolean = line.substring(colonIndex + 1).trim();
       
       // Remove quotes if present
       if ((value.startsWith('"') && value.endsWith('"')) || 
@@ -50,7 +50,7 @@ const parseFrontmatter = (content: string) => {
   return data;
 };
 
-export const useDecapContent = <T>(contentPath: string): ContentHook<T> => {
+export const usePagesContent = <T>(contentPath: string): ContentHook<T> => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -83,7 +83,7 @@ export const useDecapContent = <T>(contentPath: string): ContentHook<T> => {
   return { data, loading, error };
 };
 
-export const useDecapCollection = <T>(collectionName: string): ContentHook<T[]> => {
+export const usePagesCollection = <T>(collectionName: string): ContentHook<T[]> => {
   const [data, setData] = useState<T[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

@@ -1,5 +1,5 @@
 
-import { useDecapContent } from '@/hooks/useDecapContent';
+import { usePagesContent } from '@/hooks/usePagesContent';
 
 interface AboutContent {
   title: string;
@@ -10,8 +10,8 @@ interface AboutContent {
   image: string;
 }
 
-const DecapAboutSection = () => {
-  const { data: aboutContent, loading, error } = useDecapContent<AboutContent>('/content/pages/about.md');
+const PagesAboutSection = () => {
+  const { data: aboutContent, loading, error } = usePagesContent<AboutContent>('/content/pages/about.md');
 
   // Fallback content
   const fallbackContent = {
@@ -116,4 +116,4 @@ const DecapAboutSection = () => {
   );
 };
 
-export default DecapAboutSection;
+export default PagesAboutSection;

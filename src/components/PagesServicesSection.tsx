@@ -1,7 +1,8 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Package, Truck, Warehouse, Timer, Package2 } from "lucide-react";
-import { useDecapCollection } from '@/hooks/useDecapContent';
+import type { LucideIcon } from "lucide-react";
+import { usePagesCollection } from '@/hooks/usePagesContent';
 
 interface ServiceContent {
   title: string;
@@ -10,8 +11,8 @@ interface ServiceContent {
   order: number;
 }
 
-const DecapServicesSection = () => {
-  const { data: services, loading, error } = useDecapCollection<ServiceContent>('services');
+const PagesServicesSection = () => {
+  const { data: services, loading, error } = usePagesCollection<ServiceContent>('services');
 
   // Fallback services
   const fallbackServices = [
@@ -47,7 +48,7 @@ const DecapServicesSection = () => {
     }
   ];
 
-  const iconMap: { [key: string]: any } = {
+  const iconMap: Record<string, LucideIcon> = {
     'supply-chain': Package2,
     'cold-chain': Timer,
     'inventory': Package,
@@ -129,4 +130,4 @@ const DecapServicesSection = () => {
   );
 };
 
-export default DecapServicesSection;
+export default PagesServicesSection;
