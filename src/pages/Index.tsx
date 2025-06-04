@@ -1,14 +1,14 @@
 
 import HeroSection from "@/components/HeroSection";
-import StrapiAboutSection from "@/components/StrapiAboutSection";
-import StrapiServicesSection from "@/components/StrapiServicesSection";
+import AboutSection from "@/components/AboutSection";
+import ServicesSection from "@/components/ServicesSection";
 import IndustriesSection from "@/components/IndustriesSection";
 import WhyChooseSection from "@/components/WhyChooseSection";
-import StrapiTeamSection from "@/components/StrapiTeamSection";
-import StrapiTestimonialsSection from "@/components/StrapiTestimonialsSection";
-import StrapiCareerSection from "@/components/StrapiCareerSection";
-import StrapiEnquirySection from "@/components/StrapiEnquirySection";
-import StrapiFooter from "@/components/StrapiFooter";
+import TeamSection from "@/components/TeamSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import CareerSection from "@/components/CareerSection";
+import EnquirySection from "@/components/EnquirySection";
+import Footer from "@/components/Footer";
 import FloatingNavigation from "@/components/FloatingNavigation";
 
 const Index = () => {
@@ -17,16 +17,16 @@ const Index = () => {
       <FloatingNavigation />
       <main className="w-full">
         <HeroSection />
-        <StrapiAboutSection />
-        <StrapiServicesSection />
+        <AboutSection />
+        <ServicesSection />
         <IndustriesSection />
         <WhyChooseSection />
-        <StrapiTeamSection />
-        <StrapiTestimonialsSection />
-        <StrapiCareerSection />
-        <StrapiEnquirySection />
+        <TeamSection />
+        <TestimonialsSection />
+        <CareerSection />
+        <EnquirySection />
       </main>
-      <StrapiFooter />
+      <Footer />
     </div>
   );
 };
