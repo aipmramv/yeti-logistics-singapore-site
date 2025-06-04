@@ -1,6 +1,6 @@
 
 import { Mail, Phone, MapPin } from "lucide-react";
-import { useDecapContent } from "@/hooks/useDecapContent";
+import { usePagesContent } from "@/hooks/usePagesContent";
 
 interface CompanyInfo {
   name: string;
@@ -12,7 +12,7 @@ interface CompanyInfo {
 }
 
 const Footer = () => {
-  const { data: companyInfo } = useDecapContent<CompanyInfo>('/content/pages/company.md');
+  const { data: companyInfo } = usePagesContent<CompanyInfo>('/content/pages/company.md');
 
   // Fallback company info
   const fallbackCompany = {

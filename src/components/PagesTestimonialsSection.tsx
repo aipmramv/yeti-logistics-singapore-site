@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { useDecapCollection } from '@/hooks/useDecapContent';
+import { usePagesCollection } from '@/hooks/usePagesContent';
 
 interface Testimonial {
   company: string;
@@ -12,8 +12,8 @@ interface Testimonial {
   image?: string;
 }
 
-const DecapTestimonialsSection = () => {
-  const { data: testimonials, loading, error } = useDecapCollection<Testimonial>('testimonials');
+const PagesTestimonialsSection = () => {
+  const { data: testimonials, loading, error } = usePagesCollection<Testimonial>('testimonials');
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   
   // Fallback testimonials
@@ -131,4 +131,4 @@ const DecapTestimonialsSection = () => {
   );
 };
 
-export default DecapTestimonialsSection;
+export default PagesTestimonialsSection;

@@ -2,7 +2,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Clock } from "lucide-react";
-import { useDecapCollection } from '@/hooks/useDecapContent';
+import { usePagesCollection } from '@/hooks/usePagesContent';
 
 interface Job {
   title: string;
@@ -15,8 +15,8 @@ interface Job {
   published: boolean;
 }
 
-const DecapCareerSection = () => {
-  const { data: jobs, loading, error } = useDecapCollection<Job>('jobs');
+const PagesCareerSection = () => {
+  const { data: jobs, loading, error } = usePagesCollection<Job>('jobs');
 
   // Fallback jobs
   const fallbackJobs = [
@@ -180,4 +180,4 @@ Best regards,`);
   );
 };
 
-export default DecapCareerSection;
+export default PagesCareerSection;

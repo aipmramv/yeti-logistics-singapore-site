@@ -31,7 +31,7 @@ const TestimonialsSection = () => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [testimonials.length]);
 
   return (
     <section className="py-20 bg-blue-900 text-white">

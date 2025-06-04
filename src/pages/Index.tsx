@@ -1,12 +1,12 @@
 
 import HeroSection from "@/components/HeroSection";
-import AboutSection from "@/components/AboutSection";
-import ServicesSection from "@/components/ServicesSection";
+import PagesAboutSection from "@/components/PagesAboutSection";
+import PagesServicesSection from "@/components/PagesServicesSection";
 import IndustriesSection from "@/components/IndustriesSection";
 import WhyChooseSection from "@/components/WhyChooseSection";
-import TeamSection from "@/components/TeamSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import CareerSection from "@/components/CareerSection";
+import PagesTeamSection from "@/components/PagesTeamSection";
+import PagesTestimonialsSection from "@/components/PagesTestimonialsSection";
+import PagesCareerSection from "@/components/PagesCareerSection";
 import EnquirySection from "@/components/EnquirySection";
 import Footer from "@/components/Footer";
 import FloatingNavigation from "@/components/FloatingNavigation";
@@ -17,13 +17,13 @@ const Index = () => {
       <FloatingNavigation />
       <main className="w-full">
         <HeroSection />
-        <AboutSection />
-        <ServicesSection />
+        <PagesAboutSection />
+        <PagesServicesSection />
         <IndustriesSection />
         <WhyChooseSection />
-        <TeamSection />
-        <TestimonialsSection />
-        <CareerSection />
+        <PagesTeamSection />
+        <PagesTestimonialsSection />
+        <PagesCareerSection />
         <EnquirySection />
       </main>
       <Footer />
