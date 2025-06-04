@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Package, Truck, Warehouse, Timer, Package2 } from "lucide-react";
 
@@ -32,7 +31,7 @@ const ServicesSection = () => {
   ];
 
   return (
-    <section className="py-16 lg:py-20 bg-gray-50 w-full">
+    <section id="services" className="py-16 lg:py-20 bg-gray-50 w-full">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 lg:mb-16 space-y-4">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">

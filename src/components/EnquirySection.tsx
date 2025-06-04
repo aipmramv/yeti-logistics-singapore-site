@@ -3,100 +3,54 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
-import { useDecapContent } from "@/hooks/useDecapContent";
-
-interface CompanyInfo {
-  name: string;
-  address: string;
-  phone: string;
-  email: string;
-  registration: string;
-  founded: number;
-}
+import { Label } from "@/components/ui/label";
+import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { toast } from "sonner";
 
 const EnquirySection = () => {
-  const { toast } = useToast();
-  const { data: companyInfo, loading: companyLoading } = useDecapContent<CompanyInfo>('/content/pages/company.md');
-  
   const [formData, setFormData] = useState({
-    fullName: '',
-    company: '',
-    email: '',
-    phone: '',
-    service: '',
-    message: ''
+    name: "",
+    email: "",
+    phone: "",
+    company: "",
+    message: ""
   });
-
-  const services = [
-    'Supply Chain Management',
-    'Cold Chain Logistics',
-    'Inventory Management',
-    'B2B/B2C Delivery',
-    'Warehousing Solutions',
-    'Other'
-  ];
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Create email content
-    const emailSubject = encodeURIComponent(`New Enquiry from ${formData.fullName}`);
-    const emailBody = encodeURIComponent(`
-New enquiry received from the website:
-
-Name: ${formData.fullName}
-Company: ${formData.company || 'Not provided'}
+    const subject = encodeURIComponent("Enquiry from " + formData.name);
+    const body = encodeURIComponent(`
+Name: ${formData.name}
 Email: ${formData.email}
-Phone: ${formData.phone || 'Not provided'}
-Service Interest: ${formData.service || 'Not specified'}
-
-Message:
-${formData.message}
-
-This enquiry was submitted through the Yeti Logistics website contact form.
+Phone: ${formData.phone}
+Company: ${formData.company}
+Message: ${formData.message}
     `);
     
-    // Get company email from CMS or use fallback
-    const contactEmail = companyInfo?.email || 'enquiry@yetilogistics.com';
+    window.location.href = `mailto:enquiry@yetilogistics.com?subject=${subject}&body=${body}`;
+    toast.success("Email client opened! Please send the email to complete your enquiry.");
     
-    // Open email client
-    window.location.href = `mailto:${contactEmail}?subject=${emailSubject}&body=${emailBody}`;
-    
-    // Log to console as requested
-    console.log('Enquiry Form Submission:', {
-      ...formData,
-      submittedTo: contactEmail,
-      timestamp: new Date().toISOString()
-    });
-    
-    // Show success toast
-    toast({
-      title: "Enquiry Submitted Successfully!",
-      description: "Thank you for your interest. We'll get back to you within 24 hours.",
-    });
-    
-    // Reset form
     setFormData({
-      fullName: '',
-      company: '',
-      email: '',
-      phone: '',
-      service: '',
-      message: ''
+      name: "",
+      email: "",
+      phone: "",
+      company: "",
+      message: ""
+    });
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
     });
   };
 
   return (
     <section id="enquiry" className="py-20 bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
             Get In Touch
@@ -105,111 +59,135 @@ This enquiry was submitted through the Yeti Logistics website contact form.
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Ready to optimize your logistics? Contact us today for a customized solution.
           </p>
-          
-          {!companyLoading && companyInfo && (
-            <div className="mt-8 text-center text-gray-600">
-              <p className="mb-2">
-                <strong>{companyInfo.name}</strong>
-              </p>
-              <p className="whitespace-pre-line mb-2">{companyInfo.address}</p>
-              <p className="mb-1">
-                <strong>Phone:</strong> {companyInfo.phone}
-              </p>
-              <p>
-                <strong>Email:</strong> {companyInfo.email}
-              </p>
-            </div>
-          )}
         </div>
         
-        <Card className="shadow-2xl border-0">
-          <CardContent className="p-8">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="fullName">Full Name *</Label>
-                  <Input
-                    id="fullName"
-                    value={formData.fullName}
-                    onChange={(e) => handleInputChange('fullName', e.target.value)}
+        <div className="grid lg:grid-cols-2 gap-12">
+          <Card className="shadow-xl border-0">
+            <CardContent className="p-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Send us a message</h3>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="name">Name *</Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="email">Email *</Label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="phone">Phone</Label>
+                    <Input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="company">Company</Label>
+                    <Input
+                      id="company"
+                      name="company"
+                      type="text"
+                      value={formData.company}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <Label htmlFor="message">Message *</Label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    rows={5}
                     required
-                    className="border-gray-300 focus:border-blue-500"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    placeholder="Tell us about your logistics needs..."
                   />
                 </div>
                 
-                <div className="space-y-2">
-                  <Label htmlFor="company">Company</Label>
-                  <Input
-                    id="company"
-                    value={formData.company}
-                    onChange={(e) => handleInputChange('company', e.target.value)}
-                    className="border-gray-300 focus:border-blue-500"
-                  />
-                </div>
-              </div>
-              
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email *</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
-                    required
-                    className="border-gray-300 focus:border-blue-500"
-                  />
+                <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                  Send Message
+                  <Send className="ml-2 h-4 w-4" />
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+          
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h3>
+              <div className="space-y-6">
+                <div className="flex items-start space-x-4">
+                  <MapPin className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Address</h4>
+                    <p className="text-gray-600">123 Logistics Avenue<br />Singapore 123456</p>
+                  </div>
                 </div>
                 
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input
-                    id="phone"
-                    value={formData.phone}
-                    onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className="border-gray-300 focus:border-blue-500"
-                  />
+                <div className="flex items-start space-x-4">
+                  <Phone className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Phone</h4>
+                    <a href="tel:+6561234567" className="text-gray-600 hover:text-blue-600 transition-colors">
+                      +65 6123 4567
+                    </a>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-4">
+                  <Mail className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Email</h4>
+                    <a href="mailto:enquiry@yetilogistics.com" className="text-gray-600 hover:text-blue-600 transition-colors">
+                      enquiry@yetilogistics.com
+                    </a>
+                  </div>
                 </div>
               </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="service">Service Interest</Label>
-                <Select onValueChange={(value) => handleInputChange('service', value)}>
-                  <SelectTrigger className="border-gray-300 focus:border-blue-500">
-                    <SelectValue placeholder="Select a service" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {services.map((service) => (
-                      <SelectItem key={service} value={service}>
-                        {service}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+            </div>
+            
+            <div className="bg-blue-50 p-6 rounded-lg">
+              <h4 className="font-semibold text-gray-900 mb-3">Business Hours</h4>
+              <div className="space-y-2 text-sm text-gray-600">
+                <div className="flex justify-between">
+                  <span>Monday - Friday:</span>
+                  <span>8:00 AM - 6:00 PM</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Saturday:</span>
+                  <span>8:00 AM - 12:00 PM</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Sunday:</span>
+                  <span>Closed</span>
+                </div>
               </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="message">Message *</Label>
-                <Textarea
-                  id="message"
-                  value={formData.message}
-                  onChange={(e) => handleInputChange('message', e.target.value)}
-                  required
-                  rows={5}
-                  className="border-gray-300 focus:border-blue-500"
-                  placeholder="Tell us about your logistics needs..."
-                />
-              </div>
-              
-              <Button 
-                type="submit" 
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg transition-colors duration-300"
-              >
-                Submit Enquiry
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
