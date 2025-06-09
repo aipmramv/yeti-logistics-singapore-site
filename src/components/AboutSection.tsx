@@ -7,7 +7,7 @@ const AboutSection = () => {
     years_experience: "19+",
     target_audience: "Our primary clients are medium-sized enterprises and large organizations across a range of food industries that require efficient and scalable logistics solutions. These businesses often face challenges such as inefficient delivery operations impacting customer satisfaction and cost, limited or disorganized warehousing capacity that slows down inventory management, and complex logistics coordination that consumes time and internal resources.",
     key_values: "The company's extensive experience allows them to adapt to the evolving needs of their customers, providing innovative solutions that meet the demands of a rapidly changing market. Yeti Logistics commitment to excellence and customer satisfaction has earned a reputation as a trusted partner in the logistics field. Yeti Logistics prides itself on its reliable and timely delivery services, utilizing a vast network of transportation options to ensure that your goods reach their destination quickly and securely.",
-    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=800&fit=crop"
+    image: "/lovable-uploads/b793c471-a05c-48b9-b8c3-be794bbef778.png"
   };
 
   return (

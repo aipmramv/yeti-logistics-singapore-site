@@ -5,20 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Send } from "lucide-react";
 import { toast } from "sonner";
-import { useDecapContent } from "@/hooks/useDecapContent";
-
-interface CompanyInfo {
-  name: string;
-  address: string;
-  phone: string;
-  email: string;
-}
 
 const EnquirySection = () => {
-  const { data: companyInfo } = useDecapContent<CompanyInfo>('/content/pages/company.md');
-  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -27,15 +17,10 @@ const EnquirySection = () => {
     message: ""
   });
 
-  // Fallback company info
-  const fallbackCompany = {
+  const companyInfo = {
     name: "Yeti Logistics (S) Pte Ltd",
-    address: "56 Sembawang Road #01-07\nHong Heng Mansion\nSingapore 779086",
-    phone: "+65 8785 0107",
     email: "enquiry@yetilogistics.com"
   };
-
-  const displayCompany = companyInfo || fallbackCompany;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,7 +34,7 @@ Company: ${formData.company}
 Message: ${formData.message}
     `);
     
-    window.location.href = `mailto:${displayCompany.email}?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${companyInfo.email}?subject=${subject}&body=${body}`;
     toast.success("Email client opened! Please send the email to complete your enquiry.");
     
     setFormData({
@@ -70,7 +55,7 @@ Message: ${formData.message}
 
   return (
     <section id="enquiry" className="py-20 bg-gray-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
             Get In Touch
@@ -81,115 +66,78 @@ Message: ${formData.message}
           </p>
         </div>
         
-        <div className="grid lg:grid-cols-2 gap-12">
-          <Card className="shadow-xl border-0">
-            <CardContent className="p-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Send us a message</h3>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="name">Name *</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="email">Email *</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
-                
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="phone">Phone</Label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="company">Company</Label>
-                    <Input
-                      id="company"
-                      name="company"
-                      type="text"
-                      value={formData.company}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
-                
+        <Card className="shadow-xl border-0 max-w-2xl mx-auto">
+          <CardContent className="p-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">Send us a message</h3>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="message">Message *</Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    rows={5}
+                  <Label htmlFor="name">Name *</Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    type="text"
                     required
-                    value={formData.message}
+                    value={formData.name}
                     onChange={handleInputChange}
-                    placeholder="Tell us about your logistics needs..."
                   />
                 </div>
-                
-                <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                  Send Message
-                  <Send className="ml-2 h-4 w-4" />
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-          
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h3>
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <MapPin className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Address</h4>
-                    <p className="text-gray-600 whitespace-pre-line">{displayCompany.address}</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start space-x-4">
-                  <Phone className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Hotline</h4>
-                    <a href={`tel:${displayCompany.phone}`} className="text-gray-600 hover:text-blue-600 transition-colors">
-                      {displayCompany.phone}
-                    </a>
-                  </div>
-                </div>
-                
-                <div className="flex items-start space-x-4">
-                  <Mail className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Email</h4>
-                    <a href={`mailto:${displayCompany.email}`} className="text-gray-600 hover:text-blue-600 transition-colors">
-                      {displayCompany.email}
-                    </a>
-                  </div>
+                <div>
+                  <Label htmlFor="email">Email *</Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={handleInputChange}
+                  />
                 </div>
               </div>
-            </div>
+              
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="phone">Phone</Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="company">Company</Label>
+                  <Input
+                    id="company"
+                    name="company"
+                    type="text"
+                    value={formData.company}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <Label htmlFor="message">Message *</Label>
+                <Textarea
+                  id="message"
+                  name="message"
+                  rows={5}
+                  required
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  placeholder="Tell us about your logistics needs..."
+                />
+              </div>
+              
+              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                Send Message
+                <Send className="ml-2 h-4 w-4" />
+              </Button>
+            </form>
             
-            <div className="bg-blue-50 p-6 rounded-lg">
+            <div className="mt-8 bg-blue-50 p-6 rounded-lg">
               <h4 className="font-semibold text-gray-900 mb-3">Business Hours</h4>
               <div className="space-y-2 text-sm text-gray-600">
                 <div className="flex justify-between">
@@ -206,8 +154,8 @@ Message: ${formData.message}
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </section>
   );
