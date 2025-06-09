@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 
 const TeamSection = () => {
@@ -6,19 +7,19 @@ const TeamSection = () => {
       name: "Mr. Vimalasan",
       position: "Director",
       image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
-      bio: "Leading strategic vision and company growth with over 20 years of industry experience."
+      bio: "Mr Vimalasan brings with him over two decades of hands-on experience in the logistics and supply chain industry. Known for his strategic mindset and operational expertise, he has successfully overseen the development and execution of complex logistics networks across regional markets. His leadership style emphasizes efficiency, customer satisfaction, and continuous innovation. Mr Vimalasan's in-depth understanding of warehousing, transportation, and last-mile delivery operations has been instrumental in positioning the company as a trusted logistics partner for SMEs."
     },
     {
       name: "Mr. Louis Tan Chek Wei",
       position: "Director",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
-      bio: "Overseeing operations and ensuring excellence in service delivery across all departments."
+      bio: "Mr Louis Tan Chek Wei is a seasoned logistics professional with a proven track record in supply chain management, distribution planning, and business development. With extensive experience in local, air, ocean international operations, Mr Louis has a strong reputation for delivering scalable solutions tailored to clients' unique business needs. His focus strategies has led to significant improvements in operational performance and cost efficiency across projects. His collaborative leadership fosters innovation and a results-driven culture within the team."
     },
     {
       name: "Mr. RishiNathan",
       position: "Operations Manager",
       image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face",
-      bio: "Managing day-to-day operations and optimizing logistics processes for maximum efficiency."
+      bio: "Mr RishiNathan has grown significantly within the organization, having developed his expertise under the direct mentorship of Directors Mr Vimalasan and Mr Louis Tan Chek Wei. Through years of hands-on experience and close collaboration with leadership, he has built a deep understanding of day-to-day logistics operations, warehouse management, and delivery coordination. Known for his commitment to operational excellence, Mr Rishi plays a critical role in ensuring smooth execution across all logistics functions. His leadership on the ground ensures that service standards are consistently met, and client expectations are exceeded."
     }
   ];
 
@@ -54,7 +55,7 @@ const TeamSection = () => {
                   <p className="text-blue-600 font-semibold mb-4">
                     {member.position}
                   </p>
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-gray-600 leading-relaxed text-sm">
                     {member.bio}
                   </p>
                 </div>

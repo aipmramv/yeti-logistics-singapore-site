@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Clock, Users } from "lucide-react";
@@ -10,6 +11,20 @@ const CareerSection = () => {
       location: "Singapore",
       description: "Join our team of professional drivers and be part of our reliable delivery network. Valid Class 3 license required.",
       requirements: ["Valid Class 3 driving license", "Clean driving record", "Customer service oriented", "Physical fitness"]
+    },
+    {
+      title: "Class 4 Drivers",
+      type: "Full-time",
+      location: "Singapore",
+      description: "Drive larger vehicles for our specialized logistics operations. Valid Class 4 license required with experience in commercial driving.",
+      requirements: ["Valid Class 4 driving license", "Commercial driving experience", "Clean driving record", "Physical fitness"]
+    },
+    {
+      title: "Vehicle Attendant",
+      type: "Full-time",
+      location: "Singapore",
+      description: "Assist drivers and ensure safe loading/unloading of goods. Great entry-level position with growth opportunities.",
+      requirements: ["Physical ability to lift heavy items", "Teamwork skills", "Attention to detail", "Willingness to learn"]
     },
     {
       title: "Warehouse Packers",

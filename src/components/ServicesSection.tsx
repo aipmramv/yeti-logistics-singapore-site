@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Package, Truck, Warehouse, Timer, Package2 } from "lucide-react";
 
@@ -6,27 +7,27 @@ const ServicesSection = () => {
     {
       icon: Package2,
       title: "Supply Chain Management",
-      description: "End-to-end supply chain optimization with real-time tracking and analytics for maximum efficiency."
+      description: "We manage your supply chain with precision, transparency, and adaptability. End-to-end supply chain optimization with real-time tracking and analytics for maximum efficiency."
     },
     {
       icon: Timer,
-      title: "Cold Chain Logistics",
-      description: "Temperature-controlled transportation and storage solutions ensuring product integrity from origin to destination."
+      title: "Cold Chain Management",
+      description: "We provide temperature-sensitive goods with innovative cold chain systems and real-time monitoring. Temperature-controlled transportation and storage solutions ensuring product integrity from origin to destination."
     },
     {
       icon: Package,
       title: "Inventory Management",
-      description: "Smart inventory solutions with automated tracking, real-time updates, and optimized stock levels."
+      description: "Our systems help you reduce waste, cut costs, and stay ahead of demand. Smart inventory solutions with automated tracking, real-time updates, and optimized stock levels."
     },
     {
       icon: Truck,
-      title: "B2B/B2C Delivery",
-      description: "Reliable delivery services for both business and consumer markets with flexible scheduling options."
+      title: "B2B/B2C Delivery Specialist",
+      description: "From large-scale business orders to doorstep deliveries, we deliver promptly, with care, and consistency. Reliable delivery services for both business and consumer markets with flexible scheduling options."
     },
     {
       icon: Warehouse,
-      title: "Warehousing Solutions",
-      description: "State-of-the-art warehousing facilities with climate control and advanced security systems."
+      title: "Strategic Warehousing",
+      description: "Our scalable warehouse spaces are designed for efficiency, flexibility, and growth. State-of-the-art warehousing facilities with climate control and advanced security systems."
     }
   ];
 
