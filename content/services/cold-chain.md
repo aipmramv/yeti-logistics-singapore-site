@@ -1,7 +1,7 @@
 
 ---
-title: "Cold Chain Logistics"
-description: "Temperature-controlled transportation and storage solutions ensuring product integrity from origin to destination."
+title: "Cold Chain Management"
+description: "We provide temperature-sensitive goods with innovative cold chain systems and real-time monitoring."
 icon_key: "cold-chain"
 order: 2
 ---

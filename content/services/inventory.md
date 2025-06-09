@@ -1,7 +1,7 @@
 
 ---
 title: "Inventory Management"
-description: "Smart inventory solutions with automated tracking, real-time updates, and optimized stock levels."
+description: "Our systems help you reduce waste, cut costs, and stay ahead of demand."
 icon_key: "inventory"
 order: 3
 ---

@@ -1,7 +1,7 @@
 
 ---
-title: "Warehousing Solutions"
-description: "State-of-the-art warehousing facilities with climate control and advanced security systems."
+title: "Strategic Warehousing"
+description: "Our scalable warehouse spaces are designed for efficiency, flexibility, and growth."
 icon_key: "warehousing"
 order: 5
 ---

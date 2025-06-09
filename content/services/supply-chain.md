@@ -1,7 +1,7 @@
 
 ---
 title: "Supply Chain Management"
-description: "End-to-end supply chain optimization with real-time tracking and analytics for maximum efficiency."
+description: "We manage your supply chain with precision, transparency, and adaptability."
 icon_key: "supply-chain"
 order: 1
 ---

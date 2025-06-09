@@ -1,5 +1,5 @@
 
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook } from "lucide-react";
 import { useDecapContent } from "@/hooks/useDecapContent";
 
 interface CompanyInfo {
@@ -9,6 +9,8 @@ interface CompanyInfo {
   email: string;
   registration: string;
   founded: number;
+  established_date: string;
+  facebook: string;
 }
 
 const Footer = () => {
@@ -17,11 +19,13 @@ const Footer = () => {
   // Fallback company info
   const fallbackCompany = {
     name: "Yeti Logistics (S) Pte Ltd",
-    address: "123 Logistics Avenue\nSingapore 123456",
-    phone: "+65 6123 4567",
+    address: "56 Sembawang Road #01-07\nHong Heng Mansion\nSingapore 779086",
+    phone: "+65 8785 0107",
     email: "enquiry@yetilogistics.com",
     registration: "201234567G",
-    founded: 2004
+    founded: 2005,
+    established_date: "24 August 2005",
+    facebook: "https://www.facebook.com/yetilogisticspteltd?mibextid=wwXIfr&mibextid=wwXIfr"
   };
 
   const displayCompany = companyInfo || fallbackCompany;
@@ -33,11 +37,21 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold mb-4">{displayCompany.name}</h3>
             <p className="text-gray-300 mb-4">
-              Singapore's trusted logistics partner since {displayCompany.founded}, delivering excellence in supply chain management, cold chain logistics, and comprehensive warehousing solutions.
+              Established on {displayCompany.established_date}, delivering smart, reliable logistics solutions. Your preferred logistics partner for comprehensive supply chain management.
             </p>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-gray-400 mb-4">
               Registration: {displayCompany.registration}
             </p>
+            <div className="flex space-x-4">
+              <a 
+                href={displayCompany.facebook} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                <Facebook className="w-6 h-6" />
+              </a>
+            </div>
           </div>
           
           <div>
@@ -66,10 +80,10 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">Our Services</h4>
             <ul className="space-y-2 text-gray-300">
               <li>Supply Chain Management</li>
-              <li>Cold Chain Logistics</li>
+              <li>Cold Chain Management</li>
               <li>Inventory Management</li>
-              <li>B2B/B2C Delivery</li>
-              <li>Warehousing Solutions</li>
+              <li>B2B/B2C Delivery Specialist</li>
+              <li>Strategic Warehousing</li>
             </ul>
           </div>
         </div>

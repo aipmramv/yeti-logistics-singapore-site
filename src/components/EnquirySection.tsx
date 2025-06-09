@@ -7,8 +7,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { toast } from "sonner";
+import { useDecapContent } from "@/hooks/useDecapContent";
+
+interface CompanyInfo {
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+}
 
 const EnquirySection = () => {
+  const { data: companyInfo } = useDecapContent<CompanyInfo>('/content/pages/company.md');
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,6 +26,16 @@ const EnquirySection = () => {
     company: "",
     message: ""
   });
+
+  // Fallback company info
+  const fallbackCompany = {
+    name: "Yeti Logistics (S) Pte Ltd",
+    address: "56 Sembawang Road #01-07\nHong Heng Mansion\nSingapore 779086",
+    phone: "+65 8785 0107",
+    email: "enquiry@yetilogistics.com"
+  };
+
+  const displayCompany = companyInfo || fallbackCompany;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +49,7 @@ Company: ${formData.company}
 Message: ${formData.message}
     `);
     
-    window.location.href = `mailto:enquiry@yetilogistics.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${displayCompany.email}?subject=${subject}&body=${body}`;
     toast.success("Email client opened! Please send the email to complete your enquiry.");
     
     setFormData({
@@ -143,16 +163,16 @@ Message: ${formData.message}
                   <MapPin className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold text-gray-900">Address</h4>
-                    <p className="text-gray-600">123 Logistics Avenue<br />Singapore 123456</p>
+                    <p className="text-gray-600 whitespace-pre-line">{displayCompany.address}</p>
                   </div>
                 </div>
                 
                 <div className="flex items-start space-x-4">
                   <Phone className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
                   <div>
-                    <h4 className="font-semibold text-gray-900">Phone</h4>
-                    <a href="tel:+6561234567" className="text-gray-600 hover:text-blue-600 transition-colors">
-                      +65 6123 4567
+                    <h4 className="font-semibold text-gray-900">Hotline</h4>
+                    <a href={`tel:${displayCompany.phone}`} className="text-gray-600 hover:text-blue-600 transition-colors">
+                      {displayCompany.phone}
                     </a>
                   </div>
                 </div>
@@ -161,8 +181,8 @@ Message: ${formData.message}
                   <Mail className="w-6 h-6 text-blue-600 mt-1 flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold text-gray-900">Email</h4>
-                    <a href="mailto:enquiry@yetilogistics.com" className="text-gray-600 hover:text-blue-600 transition-colors">
-                      enquiry@yetilogistics.com
+                    <a href={`mailto:${displayCompany.email}`} className="text-gray-600 hover:text-blue-600 transition-colors">
+                      {displayCompany.email}
                     </a>
                   </div>
                 </div>
