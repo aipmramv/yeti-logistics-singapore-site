@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -7,22 +6,28 @@ const TestimonialsSection = () => {
   
   const testimonials = [
     {
-      quote: "Yeti Logistics has been our trusted partner for over 5 years. Their cold chain solutions have helped us maintain product quality while expanding our market reach across Singapore.",
-      author: "Sarah Chen",
-      company: "Fresh Food Distributors Pte Ltd",
-      position: "Operations Director"
+      quote: "Yeti Logistics has consistently provided reliable, efficient, and professional delivery services. Their drivers are punctual and committed, ensuring seamless logistics support for our operations.",
+      author: "Danny Yow",
+      company: "Cuisine Service Pte Ltd",
+      position: "Operation Manager"
     },
     {
-      quote: "The reliability and professionalism of Yeti Logistics is unmatched. They handle our time-sensitive deliveries with precision and care, making them an invaluable part of our supply chain.",
-      author: "David Kumar",
-      company: "Singapore Food Solutions",
-      position: "Supply Chain Manager"
+      quote: "Yeti has been a key partner in our operations. Their team handles challenges effortlessly and ensures timely, damage-free deliveries with exceptional customer support.",
+      author: "Thomas",
+      company: "Le Petit Depot Pte Ltd",
+      position: "Warehouse Manager"
     },
     {
-      quote: "From warehousing to last-mile delivery, Yeti Logistics provides comprehensive solutions that have streamlined our operations and reduced costs significantly.",
-      author: "Michelle Wong",
-      company: "Premium Grocers Singapore",
-      position: "CEO"
+      quote: "For more than 10 years, Yeti Logistics has shown accountability, dedication, and superb service. We value their consistent support and look forward to continued collaboration.",
+      author: "Jason Ng",
+      company: "Baker's Oven Pattisseries",
+      position: "Managing Director"
+    },
+    {
+      quote: "Yeti Logistics stands out for punctuality, quick problem-solving, and unwavering reliability. Their team is proactive, responsive, and crucial to our success.",
+      author: "Matias Alberto Mendez Saavedra",
+      company: "Starter Lab Pte Ltd",
+      position: "Executive Sous Chef"
     }
   ];
 
