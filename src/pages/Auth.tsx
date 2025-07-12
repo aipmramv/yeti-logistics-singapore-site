@@ -13,15 +13,24 @@ const Auth = () => {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { signIn, signUp, user } = useAuth();
+  const { signIn, signUp, user, isAdmin, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
-    if (user) {
-      navigate('/');
+    if (user && !authLoading) {
+      // Check if user came from admin route or if they're an admin
+      const intendedPath = sessionStorage.getItem('intendedPath');
+      if (intendedPath && intendedPath.startsWith('/admin')) {
+        sessionStorage.removeItem('intendedPath');
+        navigate('/admin');
+      } else if (isAdmin) {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     }
-  }, [user, navigate]);
+  }, [user, isAdmin, authLoading, navigate]);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +49,7 @@ const Auth = () => {
         title: "Welcome back!",
         description: "You have been signed in successfully.",
       });
-      navigate('/');
+      // Navigation will be handled by useEffect after auth state updates
     }
 
     setIsLoading(false);

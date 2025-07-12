@@ -10,6 +10,8 @@ const Admin = () => {
 
   useEffect(() => {
     if (!isLoading && (!user || !isAdmin)) {
+      // Store current path for redirect after login
+      sessionStorage.setItem('intendedPath', window.location.pathname);
       navigate('/auth');
     }
   }, [user, isAdmin, isLoading, navigate]);

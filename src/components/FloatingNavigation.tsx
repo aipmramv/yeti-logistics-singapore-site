@@ -1,11 +1,14 @@
 
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Settings } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const FloatingNavigation = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isAdmin } = useAuth();
 
   useEffect(() => {
     const toggleVisibility = () => {
@@ -63,6 +66,15 @@ const FloatingNavigation = () => {
                   {item.label}
                 </button>
               ))}
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center gap-2"
+                >
+                  <Settings className="h-4 w-4" />
+                  Admin
+                </Link>
+              )}
             </div>
           </div>
 
@@ -91,6 +103,16 @@ const FloatingNavigation = () => {
                   {item.label}
                 </button>
               ))}
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="text-gray-700 hover:text-blue-600 block px-3 py-2 text-base font-medium w-full text-left transition-colors duration-200 flex items-center gap-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Settings className="h-4 w-4" />
+                  Admin Panel
+                </Link>
+              )}
             </div>
           </div>
         )}
