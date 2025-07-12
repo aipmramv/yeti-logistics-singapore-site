@@ -67,19 +67,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(session.user);
         
         // Check admin role for initial session
-        supabase
-          .from('profiles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .single()
-          .then(({ data: profile }) => {
+        setTimeout(async () => {
+          try {
+            const { data: profile } = await supabase
+              .from('profiles')
+              .select('role')
+              .eq('user_id', session.user.id)
+              .single();
+            
             setIsAdmin(profile?.role === 'admin');
             setIsLoading(false);
-          })
-          .catch(() => {
+          } catch (error) {
+            console.error('Error checking admin role on init:', error);
             setIsAdmin(false);
             setIsLoading(false);
-          });
+          }
+        }, 0);
       } else {
         setIsLoading(false);
       }
