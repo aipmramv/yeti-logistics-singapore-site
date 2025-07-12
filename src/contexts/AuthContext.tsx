@@ -39,13 +39,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           // Check if user is admin using setTimeout to avoid blocking
           setTimeout(async () => {
             try {
-              const { data: profile } = await supabase
+              const { data: profile, error } = await supabase
                 .from('profiles')
                 .select('role')
                 .eq('user_id', session.user.id)
                 .single();
               
-              setIsAdmin(profile?.role === 'admin');
+              if (error) {
+                console.error('Error fetching profile:', error);
+                setIsAdmin(false);
+              } else {
+                console.log('User profile:', profile);
+                setIsAdmin(profile?.role === 'admin');
+              }
               setIsLoading(false);
             } catch (error) {
               console.error('Error checking admin role:', error);
