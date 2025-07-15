@@ -53,6 +53,45 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_submissions: {
+        Row: {
+          company: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          phone: string | null
+          service_type: string | null
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone?: string | null
+          service_type?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+          service_type?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       hero_content: {
         Row: {
           background_image: string | null
@@ -88,6 +127,89 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      industries: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number | null
+          icon_key: string | null
+          id: string
+          image: string | null
+          is_active: boolean | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          icon_key?: string | null
+          id?: string
+          image?: string | null
+          is_active?: boolean | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          icon_key?: string | null
+          id?: string
+          image?: string | null
+          is_active?: boolean | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      job_applications: {
+        Row: {
+          cover_letter: string | null
+          created_at: string
+          email: string
+          id: string
+          job_listing_id: string | null
+          name: string
+          phone: string | null
+          resume_url: string | null
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          cover_letter?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          job_listing_id?: string | null
+          name: string
+          phone?: string | null
+          resume_url?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          cover_letter?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          job_listing_id?: string | null
+          name?: string
+          phone?: string | null
+          resume_url?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_applications_job_listing_id_fkey"
+            columns: ["job_listing_id"]
+            isOneToOne: false
+            referencedRelation: "job_listings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       job_listings: {
         Row: {
