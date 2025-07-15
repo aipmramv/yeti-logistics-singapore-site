@@ -1,6 +1,4 @@
-
 const HeroSection = () => {
-
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Video */}
@@ -63,7 +61,6 @@ const HeroSection = () => {
           <div className="w-1 h-2 sm:h-3 bg-white/50 rounded-full mt-2 animate-pulse" />
         </div>
       </div>
-
     </section>
   );
 };
