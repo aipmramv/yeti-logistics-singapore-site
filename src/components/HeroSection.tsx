@@ -1,11 +1,5 @@
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "lucide-react";
-import BookingRequestModal from "./BookingRequestModal";
-
 const HeroSection = () => {
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -34,18 +28,6 @@ const HeroSection = () => {
       
       {/* Dark overlay for better text readability */}
       <div className="absolute inset-0 bg-black/50" />
-      
-      {/* Fixed Book Now Button - Top Right */}
-      <div className="fixed top-6 right-6 z-50">
-        <Button 
-          onClick={() => setIsBookingModalOpen(true)}
-          size="lg"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 text-base rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
-        >
-          Book Now
-          <Calendar className="ml-2 h-5 w-5" />
-        </Button>
-      </div>
       
       {/* Content */}
       <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 w-full max-w-6xl mx-auto">
@@ -82,11 +64,6 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Booking Modal */}
-      <BookingRequestModal 
-        isOpen={isBookingModalOpen} 
-        onClose={() => setIsBookingModalOpen(false)} 
-      />
     </section>
   );
 };
