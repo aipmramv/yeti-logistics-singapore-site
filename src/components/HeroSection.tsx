@@ -1,4 +1,24 @@
+
+import { useEffect } from 'react';
 import { useSupabaseSingle } from '@/hooks/useSupabaseQuery';
+  // Inject emboss text-shadow style once
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !document.getElementById('emboss-style')) {
+      const style = document.createElement('style');
+      style.id = 'emboss-style';
+      style.innerHTML = `
+        .text-shadow-emboss {
+          text-shadow:
+            0 2px 4px rgba(0,0,0,0.5),
+            0 1px 0 #fff,
+            0 -1px 0 #fff,
+            1px 0 0 #fff,
+            -1px 0 0 #fff;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }, []);
 
 const HeroSection = () => {
   const { data: heroContent, loading } = useSupabaseSingle<{
@@ -52,7 +72,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-black/50" />
       
       {/* Content */}
-      <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 w-full max-w-6xl mx-auto">
+      <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 w-full max-w-6xl mx-auto text-shadow-emboss">
         <div className="animate-fade-in space-y-6 md:space-y-8">
           {/* Yeti Logistics Logo */}
           <div className="flex justify-center">
@@ -64,14 +84,21 @@ const HeroSection = () => {
           </div>
           
           <div className="space-y-4 md:space-y-6">
-            <h1 className="text-3xl sm:text-4xl lg:text-6xl xl:text-7xl font-bold leading-tight">
-              {title}
+            <h1 className="text-3xl sm:text-4xl lg:text-6xl xl:text-7xl font-bold leading-tight text-shadow-emboss">
+              <span
+                style={{
+                  color: title === 'Professional Logistics Solutions' ? 'hsl(197.84deg 76.13% 52.35%)' : 'hsl(145.43deg 70.77% 25.49%)',
+                  textShadow: '0 2px 4px rgba(0,0,0,0.5), 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff'
+                }}
+              >
+                {title}
+              </span>
               {subtitle && (
-                <span className="block text-blue-300 mt-2">{subtitle}</span>
+                <span className="block text-blue-300 mt-2 text-shadow-emboss">{subtitle}</span>
               )}
             </h1>
             
-            <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl text-blue-100 max-w-4xl mx-auto px-4">
+            <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl text-blue-100 max-w-4xl mx-auto px-4 text-shadow-emboss">
               {description}
             </p>
           </div>
