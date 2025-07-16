@@ -20,7 +20,7 @@ const HeroSection = () => {
     );
   }
 
-  const backgroundImage = heroContent?.background_image || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1920&h=1080&fit=crop';
+  const backgroundImage = heroContent?.background_image || 'https://img.freepik.com/free-photo/aerial-view-cargo-ship-cargo-container-harbor_335224-1380.jpg';
   const title = heroContent?.title || 'Smart, Reliable Logistics Solutions';
   const subtitle = heroContent?.subtitle || 'in Singapore';
   const description = heroContent?.description || 'Delivering excellence in cold chain, warehousing, and B2B/B2C delivery since 2005.';
