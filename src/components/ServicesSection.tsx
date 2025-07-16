@@ -1,35 +1,43 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Package, Truck, Warehouse, Timer, Package2 } from "lucide-react";
+import { useSupabaseQuery } from '@/hooks/useSupabaseQuery';
+import { getIcon } from '@/lib/iconMapping';
 
 const ServicesSection = () => {
-  const services = [
-    {
-      icon: Package2,
-      title: "Supply Chain Management",
-      description: "We manage your supply chain with precision, transparency, and adaptability. End-to-end supply chain optimization with real-time tracking and analytics for maximum efficiency."
-    },
-    {
-      icon: Timer,
-      title: "Cold Chain Management",
-      description: "We provide temperature-sensitive goods with innovative cold chain systems and real-time monitoring. Temperature-controlled transportation and storage solutions ensuring product integrity from origin to destination."
-    },
-    {
-      icon: Package,
-      title: "Inventory Management",
-      description: "Our systems help you reduce waste, cut costs, and stay ahead of demand. Smart inventory solutions with automated tracking, real-time updates, and optimized stock levels."
-    },
-    {
-      icon: Truck,
-      title: "B2B/B2C Delivery Specialist",
-      description: "From large-scale business orders to doorstep deliveries, we deliver promptly, with care, and consistency. Reliable delivery services for both business and consumer markets with flexible scheduling options."
-    },
-    {
-      icon: Warehouse,
-      title: "Strategic Warehousing",
-      description: "Our scalable warehouse spaces are designed for efficiency, flexibility, and growth. State-of-the-art warehousing facilities with climate control and advanced security systems."
-    }
-  ];
+  const { data: services, loading, error } = useSupabaseQuery<{
+    id: string;
+    title: string;
+    description: string | null;
+    icon_key: string | null;
+    display_order: number | null;
+  }>('services', '*', { is_active: true });
+
+  if (loading) {
+    return (
+      <section id="services" className="py-16 lg:py-20 bg-gray-50 w-full">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="animate-pulse">
+            <div className="h-12 w-64 bg-gray-200 rounded mx-auto mb-16"></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="h-64 bg-gray-200 rounded-lg"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error || !services.length) {
+    return (
+      <section id="services" className="py-16 lg:py-20 bg-gray-50 w-full">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-red-600">Unable to load services. Please try again later.</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="services" className="py-16 lg:py-20 bg-gray-50 w-full">
@@ -45,21 +53,24 @@ const ServicesSection = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {services.map((service, index) => (
-            <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-0 shadow-lg h-full">
-              <CardContent className="p-6 lg:p-8 text-center h-full flex flex-col">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-600 transition-colors duration-300">
-                  <service.icon className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors duration-300" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
-                  {service.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed flex-grow">
-                  {service.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+          {services.map((service) => {
+            const IconComponent = getIcon(service.icon_key);
+            return (
+              <Card key={service.id} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-0 shadow-lg h-full">
+                <CardContent className="p-6 lg:p-8 text-center h-full flex flex-col">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-600 transition-colors duration-300">
+                    <IconComponent className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors duration-300" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                    {service.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed flex-grow">
+                    {service.description}
+                  </p>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </div>
     </section>

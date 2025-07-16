@@ -1,4 +1,30 @@
+import { useSupabaseSingle } from '@/hooks/useSupabaseQuery';
+
 const HeroSection = () => {
+  const { data: heroContent, loading } = useSupabaseSingle<{
+    title: string;
+    subtitle: string | null;
+    description: string | null;
+    cta_text: string | null;
+    background_image: string | null;
+  }>('hero_content', '*', { is_active: true });
+
+  if (loading) {
+    return (
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-900">
+        <div className="animate-pulse text-center text-white">
+          <div className="h-8 w-64 bg-white/20 rounded mx-auto mb-4"></div>
+          <div className="h-4 w-96 bg-white/20 rounded mx-auto"></div>
+        </div>
+      </section>
+    );
+  }
+
+  const backgroundImage = heroContent?.background_image || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1920&h=1080&fit=crop';
+  const title = heroContent?.title || 'Smart, Reliable Logistics Solutions';
+  const subtitle = heroContent?.subtitle || 'in Singapore';
+  const description = heroContent?.description || 'Delivering excellence in cold chain, warehousing, and B2B/B2C delivery since 2005.';
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Video */}
@@ -18,7 +44,7 @@ const HeroSection = () => {
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1920&h=1080&fit=crop')`
+              backgroundImage: `url('${backgroundImage}')`
             }}
           />
         </video>
@@ -41,15 +67,14 @@ const HeroSection = () => {
           
           <div className="space-y-4 md:space-y-6">
             <h1 className="text-3xl sm:text-4xl lg:text-6xl xl:text-7xl font-bold leading-tight">
-              Smart, Reliable
-              <span className="block text-blue-300 mt-2">Logistics Solutions</span>
-              <span className="block text-base sm:text-lg lg:text-xl xl:text-2xl font-normal mt-3 md:mt-4 text-blue-100">
-                in Singapore
-              </span>
+              {title}
+              {subtitle && (
+                <span className="block text-blue-300 mt-2">{subtitle}</span>
+              )}
             </h1>
             
             <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl text-blue-100 max-w-4xl mx-auto px-4">
-              Delivering excellence in cold chain, warehousing, and B2B/B2C delivery since 2005.
+              {description}
             </p>
           </div>
         </div>

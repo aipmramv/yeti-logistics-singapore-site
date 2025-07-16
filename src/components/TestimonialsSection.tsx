@@ -1,10 +1,21 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useSupabaseQuery } from '@/hooks/useSupabaseQuery';
 
 const TestimonialsSection = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   
-  const testimonials = [
+  const { data: dbTestimonials, loading, error } = useSupabaseQuery<{
+    id: string;
+    quote: string;
+    author: string;
+    company: string | null;
+    position: string | null;
+    display_order: number | null;
+  }>('testimonials', '*', { is_active: true });
+
+  // Fallback testimonials if database is empty
+  const fallbackTestimonials = [
     {
       quote: "Yeti Logistics has consistently provided reliable, efficient, and professional delivery services. Their drivers are punctual and committed, ensuring seamless logistics support for our operations.",
       author: "Danny Yow",
@@ -30,6 +41,8 @@ const TestimonialsSection = () => {
       position: "Executive Sous Chef"
     }
   ];
+
+  const testimonials = dbTestimonials.length > 0 ? dbTestimonials : fallbackTestimonials;
 
   useEffect(() => {
     const timer = setInterval(() => {

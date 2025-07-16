@@ -2,45 +2,47 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Clock, Users } from "lucide-react";
+import { useSupabaseQuery } from '@/hooks/useSupabaseQuery';
 
 const CareerSection = () => {
-  const jobs = [
-    {
-      title: "Class 3 Drivers",
-      type: "Full-time",
-      location: "Singapore",
-      description: "Join our team of professional drivers and be part of our reliable delivery network. Valid Class 3 license required.",
-      requirements: ["Valid Class 3 driving license", "Clean driving record", "Customer service oriented", "Physical fitness"]
-    },
-    {
-      title: "Class 4 Drivers",
-      type: "Full-time",
-      location: "Singapore",
-      description: "Drive larger vehicles for our specialized logistics operations. Valid Class 4 license required with experience in commercial driving.",
-      requirements: ["Valid Class 4 driving license", "Commercial driving experience", "Clean driving record", "Physical fitness"]
-    },
-    {
-      title: "Vehicle Attendant",
-      type: "Full-time",
-      location: "Singapore",
-      description: "Assist drivers and ensure safe loading/unloading of goods. Great entry-level position with growth opportunities.",
-      requirements: ["Physical ability to lift heavy items", "Teamwork skills", "Attention to detail", "Willingness to learn"]
-    },
-    {
-      title: "Warehouse Packers",
-      type: "Full-time",
-      location: "Singapore",
-      description: "Work in our modern warehouse facilities handling packaging and inventory management with growth opportunities.",
-      requirements: ["Physical ability to lift packages", "Attention to detail", "Team player", "Previous warehouse experience preferred"]
-    },
-    {
-      title: "Logistics Coordinator",
-      type: "Full-time",
-      location: "Singapore",
-      description: "Coordinate logistics operations and ensure smooth supply chain processes. Great opportunity for career advancement.",
-      requirements: ["Logistics or supply chain experience", "Strong communication skills", "Computer proficiency", "Problem-solving abilities"]
-    }
-  ];
+  const { data: jobs, loading, error } = useSupabaseQuery<{
+    id: string;
+    title: string;
+    type: string | null;
+    location: string | null;
+    description: string | null;
+    requirements: string | null;
+    benefits: string | null;
+    department: string | null;
+    display_order: number | null;
+  }>('job_listings', '*', { is_published: true });
+
+  if (loading) {
+    return (
+      <section id="careers" className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="animate-pulse">
+            <div className="h-12 w-64 bg-gray-200 rounded mx-auto mb-16"></div>
+            <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-8">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="h-96 bg-gray-200 rounded-lg"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="careers" className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-red-600">Unable to load job listings. Please try again later.</p>
+        </div>
+      </section>
+    );
+  }
 
   const handleApply = (jobTitle: string) => {
     const subject = encodeURIComponent(`Application for ${jobTitle} Position`);
@@ -75,50 +77,61 @@ Best regards,`);
         </div>
         
         <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-8">
-          {jobs.map((job, index) => (
-            <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
-              <CardContent className="p-6">
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    {job.title}
-                  </h3>
-                  <div className="flex flex-wrap gap-2 text-sm text-gray-600">
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
-                      {job.type}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4" />
-                      {job.location}
-                    </span>
+          {jobs.map((job) => {
+            const requirements = job.requirements ? job.requirements.split('\n').filter(r => r.trim()) : [];
+            return (
+              <Card key={job.id} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
+                <CardContent className="p-6">
+                  <div className="mb-4">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+                      {job.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-2 text-sm text-gray-600">
+                      {job.type && (
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          {job.type}
+                        </span>
+                      )}
+                      {job.location && (
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-4 h-4" />
+                          {job.location}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </div>
-                
-                <p className="text-gray-700 mb-4 leading-relaxed">
-                  {job.description}
-                </p>
-                
-                <div className="mb-6">
-                  <h4 className="font-semibold text-gray-900 mb-2">Requirements:</h4>
-                  <ul className="text-sm text-gray-600 space-y-1">
-                    {job.requirements.map((req, reqIndex) => (
-                      <li key={reqIndex} className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 flex-shrink-0" />
-                        {req}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                
-                <Button 
-                  onClick={() => handleApply(job.title)}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white transition-colors duration-300"
-                >
-                  Apply Now
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+                  
+                  {job.description && (
+                    <p className="text-gray-700 mb-4 leading-relaxed">
+                      {job.description}
+                    </p>
+                  )}
+                  
+                  {requirements.length > 0 && (
+                    <div className="mb-6">
+                      <h4 className="font-semibold text-gray-900 mb-2">Requirements:</h4>
+                      <ul className="text-sm text-gray-600 space-y-1">
+                        {requirements.map((req, reqIndex) => (
+                          <li key={reqIndex} className="flex items-start gap-2">
+                            <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 flex-shrink-0" />
+                            {req}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  
+                  <Button 
+                    onClick={() => handleApply(job.title)}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white transition-colors duration-300"
+                  >
+                    Apply Now
+                  </Button>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
         
         <div className="text-center mt-12">
