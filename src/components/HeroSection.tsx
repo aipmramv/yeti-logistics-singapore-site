@@ -1,6 +1,8 @@
 
 import { useEffect } from 'react';
 import { useSupabaseSingle } from '@/hooks/useSupabaseQuery';
+
+const HeroSection = () => {
   // Inject emboss text-shadow style once
   useEffect(() => {
     if (typeof window !== 'undefined' && !document.getElementById('emboss-style')) {
@@ -19,8 +21,6 @@ import { useSupabaseSingle } from '@/hooks/useSupabaseQuery';
       document.head.appendChild(style);
     }
   }, []);
-
-const HeroSection = () => {
   const { data: heroContent, loading } = useSupabaseSingle<{
     title: string;
     subtitle: string | null;
@@ -87,18 +87,25 @@ const HeroSection = () => {
             <h1 className="text-3xl sm:text-4xl lg:text-6xl xl:text-7xl font-bold leading-tight text-shadow-emboss">
               <span
                 style={{
-                  color: title === 'Professional Logistics Solutions' ? 'hsl(197.84deg 76.13% 52.35%)' : 'hsl(145.43deg 70.77% 25.49%)',
+                  color: '#218943', // Deep green for main title
                   textShadow: '0 2px 4px rgba(0,0,0,0.5), 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff'
                 }}
               >
-                {title}
+                Your Trusted Cold Chain & Logistics Partner
               </span>
-              {subtitle && (
-                <span className="block text-blue-300 mt-2 text-shadow-emboss">{subtitle}</span>
-              )}
+              <br />
+              <span
+                style={{
+                  color: '#3a8dde', // Strong blue for subtitle
+                  textShadow: '0 2px 4px rgba(0,0,0,0.5), 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff',
+                  fontWeight: 600
+                }}
+              >
+                Professional Logistics Solutions
+              </span>
             </h1>
             
-            <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl text-blue-100 max-w-4xl mx-auto px-4 text-shadow-emboss">
+            <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl max-w-4xl mx-auto px-4" style={{ color: '#fff', textShadow: 'none' }}>
               {description}
             </p>
           </div>
