@@ -27,8 +27,13 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat z-0"
+        style={{ backgroundImage: `url('${backgroundImage}')` }}
+      />
       {/* Background Video */}
-      <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 w-full h-full z-10 pointer-events-none">
         <video
           autoPlay
           muted
@@ -39,13 +44,6 @@ const HeroSection = () => {
           <source
             src="https://cdn.pixabay.com/video/2022/12/06/142127-778648327_large.mp4"
             type="video/mp4"
-          />
-          {/* Fallback background image if video doesn't load */}
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{
-              backgroundImage: `url('${backgroundImage}')`
-            }}
           />
         </video>
       </div>
