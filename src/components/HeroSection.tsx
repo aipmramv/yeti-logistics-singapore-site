@@ -107,7 +107,6 @@ const HeroSection = () => {
                 <span
                   style={{
                     color: '#218943', // Deep green for main title
-                    textShadow: '0 2px 4px rgba(0,0,0,0.5), 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff'
                   }}
                 >
                   Your Trusted Cold Chain & Logistics Partner
@@ -116,7 +115,6 @@ const HeroSection = () => {
                 <span
                   style={{
                     color: '#3a8dde', // Strong blue for subtitle
-                    textShadow: '0 2px 4px rgba(0,0,0,0.5), 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff',
                     fontWeight: 600
                   }}
                 >
