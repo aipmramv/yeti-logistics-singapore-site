@@ -53,6 +53,51 @@ export type Database = {
         }
         Relationships: []
       }
+      booking_submissions: {
+        Row: {
+          id: string;
+          name: string;
+          email: string;
+          phone: string | null;
+          company: string | null;
+          service_type: string | null;
+          pickup_address: string | null;
+          delivery_address: string | null;
+          cargo_description: string | null;
+          special_requests: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          email: string;
+          phone?: string | null;
+          company?: string | null;
+          service_type?: string | null;
+          pickup_address?: string | null;
+          delivery_address?: string | null;
+          cargo_description?: string | null;
+          special_requests?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          email?: string;
+          phone?: string | null;
+          company?: string | null;
+          service_type?: string | null;
+          pickup_address?: string | null;
+          delivery_address?: string | null;
+          cargo_description?: string | null;
+          special_requests?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      },
       contact_submissions: {
         Row: {
           company: string | null

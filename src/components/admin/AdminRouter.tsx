@@ -9,6 +9,7 @@ import { TeamManager } from './TeamManager';
 import { TestimonialsManager } from './TestimonialsManager';
 import { JobListingsManager } from './JobListingsManager';
 import ContactManager from './ContactManager';
+import BookingManager from './BookingManager';
 
 export const AdminRouter = () => {
   return (
@@ -30,6 +31,7 @@ export const AdminRouter = () => {
       <Route path="/jobs" element={<JobListingsManager />} />
       <Route path="jobs" element={<JobListingsManager />} />
       <Route path="/contact" element={<ContactManager />} />
+      <Route path="/bookings" element={<BookingManager />} />
       <Route path="contact" element={<ContactManager />} />
       <Route path="*" element={<AdminDashboard />} />
     </Routes>

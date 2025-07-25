@@ -15,6 +15,7 @@ const adminMenuItems = [
   { title: 'Testimonials', url: '/admin/testimonials', icon: MessageSquare },
   { title: 'Job Listings', url: '/admin/jobs', icon: Briefcase },
   { title: 'Contact Submissions', url: '/admin/contact', icon: MessageSquare },
+  { title: 'Booking Submissions', url: '/admin/bookings', icon: Briefcase },
 ];
 
 export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {

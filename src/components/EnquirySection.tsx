@@ -70,7 +70,7 @@ const EnquirySection = () => {
 
   return (
     <section id="contact" className="py-20 bg-gray-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
             Get In Touch
@@ -80,75 +80,20 @@ const EnquirySection = () => {
             Ready to optimize your logistics? Contact us today for a customized solution.
           </p>
         </div>
-
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Information */}
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h3>
-              <div className="space-y-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Mail className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">Email</p>
-                    <a href="mailto:enquiry@yetilogistics.com" className="text-blue-600 hover:text-blue-700">
-                      enquiry@yetilogistics.com
-                    </a>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Phone className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">Phone</p>
-                    <a href="tel:+6565551234" className="text-blue-600 hover:text-blue-700">
-                      +65 6555 1234
-                    </a>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Building className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">Address</p>
-                    <p className="text-gray-600">
-                      123 Logistics Avenue<br />
-                      Singapore 123456
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-blue-600 rounded-2xl p-8 text-white">
-              <h4 className="text-xl font-bold mb-4">Why Choose Yeti Logistics?</h4>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-blue-300 rounded-full mt-2 flex-shrink-0" />
-                  <span>20+ years of proven experience</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-blue-300 rounded-full mt-2 flex-shrink-0" />
-                  <span>BizSafe Level 1 certified operations</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-blue-300 rounded-full mt-2 flex-shrink-0" />
-                  <span>Comprehensive logistics solutions</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-blue-300 rounded-full mt-2 flex-shrink-0" />
-                  <span>Trusted by enterprises across Singapore</span>
-                </li>
-              </ul>
-            </div>
+          {/* Map View */}
+          <div className="rounded-2xl overflow-hidden shadow-lg h-[400px]">
+            <iframe
+              title="Yeti Logistics Location"
+              src="https://www.google.com/maps?q=56+Sembawang+Road+%2301-07,+Hong+Heng+Mansion,+Singapore+779086&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen={true}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
-
           {/* Contact Form */}
           <Card className="shadow-xl border-0">
             <CardContent className="p-8">
@@ -182,7 +127,6 @@ const EnquirySection = () => {
                     />
                   </div>
                 </div>
-
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
@@ -209,7 +153,6 @@ const EnquirySection = () => {
                     />
                   </div>
                 </div>
-
                 <div>
                   <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-2">
                     Service of Interest
@@ -228,7 +171,6 @@ const EnquirySection = () => {
                     </SelectContent>
                   </Select>
                 </div>
-
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
                     Message *
@@ -243,7 +185,6 @@ const EnquirySection = () => {
                     placeholder="Tell us about your logistics needs..."
                   />
                 </div>
-
                 <Button
                   type="submit"
                   disabled={isSubmitting}
