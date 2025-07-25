@@ -82,14 +82,13 @@ const EnquirySection = () => {
         </div>
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Map View */}
-          <div className="rounded-2xl overflow-hidden shadow-lg h-[400px]">
+          <div className="rounded-2xl overflow-hidden shadow-lg h-[450px]">
             <iframe
-              title="Yeti Logistics Location"
-              src="https://www.google.com/maps?q=56+Sembawang+Road+%2301-07,+Hong+Heng+Mansion,+Singapore+779086&output=embed"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.6222224282515!2d103.81574011079296!3d1.4029922985778627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da175185798b97%3A0x320c03694c299d72!2sYeti%20Logistics%20(S)%20Pte%20Ltd!5e0!3m2!1sen!2sin!4v1753469474100!5m2!1sen!2sin"
               width="100%"
-              height="100%"
+              height="450"
               style={{ border: 0 }}
-              allowFullScreen={true}
+              allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
