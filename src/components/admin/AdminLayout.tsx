@@ -14,6 +14,7 @@ const adminMenuItems = [
   { title: 'Team Members', url: '/admin/team', icon: Users },
   { title: 'Testimonials', url: '/admin/testimonials', icon: MessageSquare },
   { title: 'Job Listings', url: '/admin/jobs', icon: Briefcase },
+  { title: 'Contact Submissions', url: '/admin/contact', icon: MessageSquare },
 ];
 
 export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
