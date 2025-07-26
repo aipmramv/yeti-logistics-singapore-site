@@ -73,6 +73,9 @@ const Footer = () => {
           <p className="text-gray-400">
             © {new Date().getFullYear()} {companyInfo.name}. All rights reserved.
           </p>
+          <p className="text-gray-400">
+            Powered by <a href="https://totalom.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white font-bold text-blue-500">Total Outsource Management</a>
+          </p>
         </div>
       </div>
     </footer>

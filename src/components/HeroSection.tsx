@@ -26,9 +26,9 @@ const HeroSection = () => {
   // Slideshow images
   const slideshowImages = [
     'https://img.freepik.com/free-photo/aerial-view-cargo-ship-cargo-container-harbor_335224-1380.jpg',
-    'https://img.freepik.com/free-photo/aerial-shot-large-shipping-containers-area_181624-3151.jpg?t=st=1752771066~exp=1752774666~hmac=ea2edfffd620f414c7dbb749d2689c94fa072aaf1bd5c06bd7c64b56bec580f3&w=1800',
-    'https://img.freepik.com/free-photo/warehouse-industrial-building-interior-with-people-forklifts-handling-goods-storage-area_342744-1498.jpg?t=st=1752771230~exp=1752774830~hmac=1f20084498582141c5dce849dc30db5d931c3db44431bb16fb6c70677ef71a25&w=1800',
-    'https://img.freepik.com/free-photo/futuristic-technology-concept_23-2151908130.jpg?t=st=1752771529~exp=1752775129~hmac=800c11c8b95816891cef2b91fd1f95390bdad1cc6babcc39e53b2ca338568a76&w=1800',
+    '/lovable-uploads/1498.jpg',
+    '/lovable-uploads/2148923142.jpg',
+    '/lovable-uploads/2151468807.jpg',
   ];
   const [currentSlide, setCurrentSlide] = React.useState(0);
   useEffect(() => {

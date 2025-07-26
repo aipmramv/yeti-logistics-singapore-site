@@ -82,7 +82,7 @@ const EnquirySection = () => {
         </div>
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Map View */}
-          <div className="rounded-2xl overflow-hidden shadow-lg h-[450px]">
+          <div className="rounded-2xl overflow-hidden shadow-lg h-[450px] p-4">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.6222224282515!2d103.81574011079296!3d1.4029922985778627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da175185798b97%3A0x320c03694c299d72!2sYeti%20Logistics%20(S)%20Pte%20Ltd!5e0!3m2!1sen!2sin!4v1753469474100!5m2!1sen!2sin"
               width="100%"
@@ -94,8 +94,8 @@ const EnquirySection = () => {
             ></iframe>
           </div>
           {/* Contact Form */}
-          <Card className="shadow-xl border-0">
-            <CardContent className="p-8">
+          <Card className="shadow-xl border-0 h-[450px]">
+            <CardContent className="p-4 flex flex-col justify-center">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
