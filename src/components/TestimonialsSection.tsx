@@ -69,9 +69,11 @@ const TestimonialsSection = () => {
               </svg>
             </div>
             
-            <blockquote className="text-xl sm:text-2xl font-medium leading-relaxed mb-8 text-white">
-              "{testimonials[currentTestimonial].quote}"
-            </blockquote>
+            {testimonials.length > 0 ? (
+              <blockquote className="text-xl sm:text-2xl font-medium leading-relaxed mb-8 text-white">
+                "{testimonials[currentTestimonial].quote}"
+              </blockquote>
+            ) : null}
             
             <div className="border-t border-white/20 pt-6">
               <div className="font-bold text-lg text-blue-200">
