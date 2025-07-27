@@ -69,23 +69,25 @@ const TestimonialsSection = () => {
               </svg>
             </div>
             
-            {testimonials.length > 0 && currentTestimonial < testimonials.length ? (
+            {testimonials.length > 0 && currentTestimonial < testimonials.length && testimonials[currentTestimonial] ? (
               <blockquote className="text-xl sm:text-2xl font-medium leading-relaxed mb-8 text-white">
                 "{testimonials[currentTestimonial].quote}"
               </blockquote>
             ) : null}
             
-            <div className="border-t border-white/20 pt-6">
-              <div className="font-bold text-lg text-blue-200">
-                {testimonials[currentTestimonial].author}
+            {testimonials.length > 0 && currentTestimonial < testimonials.length && testimonials[currentTestimonial] ? (
+              <div className="border-t border-white/20 pt-6">
+                <div className="font-bold text-lg text-blue-200">
+                  {testimonials[currentTestimonial].author}
+                </div>
+                <div className="text-blue-300">
+                  {testimonials[currentTestimonial].position}
+                </div>
+                <div className="text-blue-400 text-sm">
+                  {testimonials[currentTestimonial].company}
+                </div>
               </div>
-              <div className="text-blue-300">
-                {testimonials[currentTestimonial].position}
-              </div>
-              <div className="text-blue-400 text-sm">
-                {testimonials[currentTestimonial].company}
-              </div>
-            </div>
+            ) : null}
           </CardContent>
         </Card>
         
