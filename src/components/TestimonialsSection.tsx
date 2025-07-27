@@ -69,7 +69,7 @@ const TestimonialsSection = () => {
               </svg>
             </div>
             
-            {testimonials.length > 0 ? (
+            {testimonials.length > 0 && currentTestimonial < testimonials.length ? (
               <blockquote className="text-xl sm:text-2xl font-medium leading-relaxed mb-8 text-white">
                 "{testimonials[currentTestimonial].quote}"
               </blockquote>
