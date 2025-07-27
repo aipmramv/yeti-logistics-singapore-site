@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -49,60 +48,38 @@ const BookingRequestModal = ({ isOpen, onClose }: BookingRequestModalProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Create email content
-    const subject = encodeURIComponent("Booking Request from " + formData.name);
-    const body = encodeURIComponent(`
-BOOKING REQUEST DETAILS
+    const subject = `Booking Request from ${formData.name}`;
+    const text = `BOOKING REQUEST DETAILS\n\nContact Details:\nName: ${formData.name}\nCompany: ${formData.company}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nService Type: ${formData.serviceType}\n\nPickup Location:\nAddress: ${formData.pickupAddress}\nContact Person: ${formData.pickupContact}\nPreferred Date & Time: ${formData.pickupDate ? format(formData.pickupDate, "PPP") : "Not specified"}\n\nDelivery Location:\nAddress: ${formData.deliveryAddress}\nContact Person: ${formData.deliveryContact}\nPreferred Date & Time: ${formData.deliveryDate ? format(formData.deliveryDate, "PPP") : "Not specified"}\n\nCargo Details:\nDescription: ${formData.cargoDescription}\nTotal Weight: ${formData.totalWeight} kg\nNumber of Packages: ${formData.numberOfPackages}\nDimensions: ${formData.dimensions}\nHazardous Cargo: ${formData.hazardousCargo ? "Yes" : "No"}\nTemperature Control Required: ${formData.temperatureControl ? "Yes" : "No"}\n\nSpecial Requests:\n${formData.specialRequests}`;
+    const html = `<h2>Booking Request Details</h2><h3>Contact Details</h3><p><strong>Name:</strong> ${formData.name}</p><p><strong>Company:</strong> ${formData.company}</p><p><strong>Email:</strong> ${formData.email}</p><p><strong>Phone:</strong> ${formData.phone}</p><p><strong>Service Type:</strong> ${formData.serviceType}</p><h3>Pickup Location</h3><p><strong>Address:</strong> ${formData.pickupAddress}</p><p><strong>Contact Person:</strong> ${formData.pickupContact}</p><p><strong>Preferred Date & Time:</strong> ${formData.pickupDate ? format(formData.pickupDate, "PPP") : "Not specified"}</p><h3>Delivery Location</h3><p><strong>Address:</strong> ${formData.deliveryAddress}</p><p><strong>Contact Person:</strong> ${formData.deliveryContact}</p><p><strong>Preferred Date & Time:</strong> ${formData.deliveryDate ? format(formData.deliveryDate, "PPP") : "Not specified"}</p><h3>Cargo Details</h3><p><strong>Description:</strong> ${formData.cargoDescription}</p><p><strong>Total Weight:</strong> ${formData.totalWeight} kg</p><p><strong>Number of Packages:</strong> ${formData.numberOfPackages}</p><p><strong>Dimensions:</strong> ${formData.dimensions}</p><p><strong>Hazardous Cargo:</strong> ${formData.hazardousCargo ? "Yes" : "No"}</p><p><strong>Temperature Control Required:</strong> ${formData.temperatureControl ? "Yes" : "No"}</p><h3>Special Requests</h3><p>${formData.specialRequests}</p>`;
 
-Contact Details:
-Name: ${formData.name}
-Company: ${formData.company}
-Email: ${formData.email}
-Phone: ${formData.phone}
-Service Type: ${formData.serviceType}
-
-Pickup Location:
-Address: ${formData.pickupAddress}
-Contact Person: ${formData.pickupContact}
-Preferred Date & Time: ${formData.pickupDate ? format(formData.pickupDate, "PPP") : "Not specified"}
-
-Delivery Location:
-Address: ${formData.deliveryAddress}
-Contact Person: ${formData.deliveryContact}
-Preferred Date & Time: ${formData.deliveryDate ? format(formData.deliveryDate, "PPP") : "Not specified"}
-
-Cargo Details:
-Description: ${formData.cargoDescription}
-Total Weight: ${formData.totalWeight} kg
-Number of Packages: ${formData.numberOfPackages}
-Dimensions: ${formData.dimensions}
-Hazardous Cargo: ${formData.hazardousCargo ? "Yes" : "No"}
-Temperature Control Required: ${formData.temperatureControl ? "Yes" : "No"}
-
-Special Requests:
-${formData.specialRequests}
-    `);
-    
-    // Open default email client
-    window.location.href = `mailto:enquiry@yetilogistics.com?subject=${subject}&body=${body}`;
-    
-    toast.success("Email client opened! Please send the email to complete your booking request.");
-    onClose();
+    // Send email via API
+    fetch('/api/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ subject, text, html })
+    })
+      .then(() => {
+        toast.success("Booking request sent! Thank you.");
+        onClose();
+      })
+      .catch(() => {
+        toast.error("Failed to send booking request email.");
+      });
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value, type } = e.target;
+    setFormData((prevFormData: typeof formData) => ({
+      ...prevFormData,
+      [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value
+    }));
   };
 
   const handleCheckboxChange = (name: string, checked: boolean) => {
-    setFormData({
-      ...formData,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [name]: checked
-    });
+    }));
   };
 
   const handleDateChange = (name: string, date: Date | undefined) => {
