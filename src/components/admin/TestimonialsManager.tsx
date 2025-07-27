@@ -48,54 +48,6 @@ export const TestimonialsManager = () => {
         description: "Failed to fetch testimonials",
         variant: "destructive"
       });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSave = async (testimonial: Partial<Testimonial>) => {
-    setIsSaving(true);
-    try {
-      const testimonialData = {
-        quote: testimonial.quote,
-        author: testimonial.author,
-        company: testimonial.company,
-        position: testimonial.position,
-        display_order: testimonial.display_order || 0,
-        is_active: testimonial.is_active ?? true
-      };
-
-      let result;
-      if (testimonial.id) {
-        result = await supabase
-          .from('testimonials')
-          .update(testimonialData)
-          .eq('id', testimonial.id);
-      } else {
-        result = await supabase
-          .from('testimonials')
-          .insert([testimonialData]);
-      }
-
-      if (result.error) throw result.error;
-
-      toast({
-        title: "Success",
-        description: `Testimonial ${testimonial.id ? 'updated' : 'created'} successfully`
-      });
-
-      fetchTestimonials();
-      setIsDialogOpen(false);
-      setEditingTestimonial(null);
-    } catch (error) {
-      console.error('Error saving testimonial:', error);
-      toast({
-        title: "Error",
-        description: "Failed to save testimonial",
-        variant: "destructive"
-      });
-    } finally {
-      setIsSaving(false);
     }
   };
 
@@ -124,7 +76,7 @@ export const TestimonialsManager = () => {
         variant: "destructive"
       });
     }
-  };
+  }
 
   const openDialog = (testimonial?: Testimonial) => {
     setEditingTestimonial(testimonial || {
@@ -137,6 +89,55 @@ export const TestimonialsManager = () => {
       is_active: true
     });
     setIsDialogOpen(true);
+  };
+
+  const handleSave = async (testimonial: Testimonial) => {
+    setIsSaving(true);
+    try {
+      let error;
+      if (testimonial.id) {
+        // Update existing testimonial
+        ({ error } = await supabase
+          .from('testimonials')
+          .update({
+            quote: testimonial.quote,
+            author: testimonial.author,
+            company: testimonial.company,
+            position: testimonial.position,
+            display_order: testimonial.display_order,
+            is_active: testimonial.is_active
+          })
+          .eq('id', testimonial.id));
+      } else {
+        // Insert new testimonial
+        ({ error } = await supabase
+          .from('testimonials')
+          .insert([{
+            quote: testimonial.quote,
+            author: testimonial.author,
+            company: testimonial.company,
+            position: testimonial.position,
+            display_order: testimonial.display_order,
+            is_active: testimonial.is_active
+          }]));
+      }
+      if (error) throw error;
+      toast({
+        title: "Success",
+        description: testimonial.id ? "Testimonial updated successfully" : "Testimonial added successfully"
+      });
+      setIsDialogOpen(false);
+      fetchTestimonials();
+    } catch (error) {
+      console.error('Error saving testimonial:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save testimonial",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   if (isLoading) {
@@ -157,56 +158,60 @@ export const TestimonialsManager = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {testimonials.map((testimonial) => (
-          <Card key={testimonial.id}>
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-lg flex items-start">
-                    <Quote className="h-4 w-4 mr-2 mt-1 flex-shrink-0" />
-                    <span className="line-clamp-2">{testimonial.quote}</span>
-                  </CardTitle>
-                  <CardDescription>
-                    {testimonial.author} - {testimonial.position}
-                  </CardDescription>
+        {testimonials.length > 0 ? (
+          testimonials.map((testimonial) => (
+            <Card key={testimonial.id}>
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle className="text-lg flex items-start">
+                      <Quote className="h-4 w-4 mr-2 mt-1 flex-shrink-0" />
+                      <span className="line-clamp-2">{testimonial.quote}</span>
+                    </CardTitle>
+                    <CardDescription>
+                      {testimonial.author} - {testimonial.position}
+                    </CardDescription>
+                  </div>
+                  <div className="flex space-x-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => openDialog(testimonial)}
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => handleDelete(testimonial.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => openDialog(testimonial)}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleDelete(testimonial.id)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-2">
+                  Company: {testimonial.company}
+                </p>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs bg-muted px-2 py-1 rounded">
+                    Order: {testimonial.display_order}
+                  </span>
+                  <span className={`text-xs px-2 py-1 rounded ${
+                    testimonial.is_active
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800'
+                  }`}>
+                    {testimonial.is_active ? 'Active' : 'Inactive'}
+                  </span>
                 </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-2">
-                Company: {testimonial.company}
-              </p>
-              <div className="flex justify-between items-center">
-                <span className="text-xs bg-muted px-2 py-1 rounded">
-                  Order: {testimonial.display_order}
-                </span>
-                <span className={`text-xs px-2 py-1 rounded ${
-                  testimonial.is_active 
-                    ? 'bg-green-100 text-green-800' 
-                    : 'bg-red-100 text-red-800'
-                }`}>
-                  {testimonial.is_active ? 'Active' : 'Inactive'}
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <div>No testimonials found.</div>
+        )}
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -306,7 +311,8 @@ const TestimonialForm: React.FC<TestimonialFormProps> = ({ testimonial, onSave, 
         />
       </div>
 
-      <div className="flex items-center space-x-2">
+      <div>
+        <Label htmlFor="active">Active</Label>
         <Switch
           id="active"
           checked={formData.is_active}
