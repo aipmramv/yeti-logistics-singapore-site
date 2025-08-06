@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Content Manager</title>
+    <script src="https://unpkg.com/decap-cms@^3/dist/decap-cms.js"></script>
+  </head>
+  <body>
+    <script>
+      window.CMS_MANUAL_INIT = true;
+    </script>
+    <script src="config.yml" type="text/yaml"></script>
+    <script>
+      fetch('config.yml').then(res => res.text()).then(config => {
+        window.CMS.init({ config: config });
+      });
+    </script>
+  </body>
+</html>

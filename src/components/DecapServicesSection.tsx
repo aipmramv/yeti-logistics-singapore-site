@@ -1,6 +1,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Package, Truck, Warehouse, Timer, Package2 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { useDecapCollection } from '@/hooks/useDecapContent';
 
 interface ServiceContent {
@@ -47,7 +48,7 @@ const DecapServicesSection = () => {
     }
   ];
 
-  const iconMap: { [key: string]: any } = {
+  const iconMap: Record<string, LucideIcon> = {
     'supply-chain': Package2,
     'cold-chain': Timer,
     'inventory': Package,
